@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="40dp"
+    tools:context="oob.instagramapitest.OptionsComponent.Framework.OptionsActivity">
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:focusableInTouchMode="true" />
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:background="@drawable/ic_add_photo_primary"
+        android:contentDescription="@string/options_component_image_header_descripcion" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="40dp">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/options_component_user_input_label"
+                android:inputType="text"
+                android:textColor="@color/colorPrimary"
+                android:textColorHint="@color/colorPrimary" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/options_component_password_input_label"
+                android:inputType="textPassword"
+                android:textColor="@color/colorPrimary"
+                android:textColorHint="@color/colorPrimary" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/createPollButtonWrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@color/colorPrimary"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="20dp">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/createPollButtonLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/options_component_btn_save_label"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="5dp"
+                    android:background="@drawable/ic_add_primary"
+                    android:backgroundTint="@color/colorAccentWhite"
+                    app:layout_constraintBottom_toBottomOf="@id/createPollButtonLabel"
+                    app:layout_constraintStart_toEndOf="@id/createPollButtonLabel"
+                    app:layout_constraintTop_toTopOf="@id/createPollButtonLabel"
+                    android:contentDescription="@string/options_component_btn_save_icon_description" />
+
+            </android.support.constraint.ConstraintLayout>
+        </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
+
+</LinearLayout>
