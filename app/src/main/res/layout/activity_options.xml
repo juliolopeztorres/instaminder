@@ -18,7 +18,7 @@
         android:layout_height="80dp"
         android:layout_gravity="center"
         android:background="@drawable/ic_add_photo_primary"
-        android:contentDescription="@string/options_component_image_header_descripcion" />
+        android:contentDescription="@string/options_component_image_header_description" />
 
     <LinearLayout
         android:layout_width="match_parent"

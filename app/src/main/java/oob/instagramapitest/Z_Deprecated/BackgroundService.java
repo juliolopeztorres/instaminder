@@ -16,7 +16,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import io.realm.Realm;
-import oob.instagramapitest.Z_Deprecated.Database.Model.Photo;
+import oob.instagramapitest.Util.Database.Photo;
 
 @SuppressLint("Registered")
 public class BackgroundService extends Service {

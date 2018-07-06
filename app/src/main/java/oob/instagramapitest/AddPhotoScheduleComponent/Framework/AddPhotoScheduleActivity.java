@@ -1,32 +1,69 @@
 package oob.instagramapitest.AddPhotoScheduleComponent.Framework;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.res.ColorStateList;
-import android.graphics.ColorFilter;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.RippleDrawable;
+import android.net.Uri;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.format.DateUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.squareup.picasso.Picasso;
+
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
+import javax.inject.Inject;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import oob.instagramapitest.AddPhotoScheduleComponent.Domain.SavePhotoUseCase.Model.Photo;
+import oob.instagramapitest.AddPhotoScheduleComponent.Domain.SavePhotoUseCase.SavePhotoUseCase;
+import oob.instagramapitest.AddPhotoScheduleComponent.Domain.ViewInterface;
+import oob.instagramapitest.AddPhotoScheduleComponent.Framework.DependencyInjection.AddPhotoScheduleComponentInterface;
+import oob.instagramapitest.AddPhotoScheduleComponent.Framework.DependencyInjection.AddPhotoScheduleComponentModule;
+import oob.instagramapitest.AddPhotoScheduleComponent.Framework.DependencyInjection.DaggerAddPhotoScheduleComponentInterface;
+import oob.instagramapitest.ApplicationComponent.BaseApplication;
 import oob.instagramapitest.R;
+import oob.instagramapitest.Util.ByteUtil;
+import oob.instagramapitest.Util.DialogUtil;
+import oob.instagramapitest.Util.LogUtil;
+import oob.instagramapitest.Util.ViewUtil;
 
-public class AddPhotoScheduleActivity extends AppCompatActivity {
+public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewInterface {
+    private static final int REQUEST_CODE_SEARCH_PHOTO = 1;
+
+    @BindView(R.id.photoName)
+    EditText photoName;
+    @BindView(R.id.photoCaption)
+    EditText photoCaption;
+    @BindView(R.id.photoDate)
+    TextView photoDate;
+    @BindView(R.id.photoTime)
+    TextView photoTime;
+    @BindView(R.id.photoImagePreview)
+    ImageView photoImagePreview;
+    @BindView(R.id.photoTapToSearchLabel)
+    View photoTapToSearchLabel;
+
+    @Inject
+    SavePhotoUseCase savePhotoUseCase;
+
+    private byte[] photoBuffer;
+    private Calendar calendar = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +72,16 @@ public class AddPhotoScheduleActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        AddPhotoScheduleComponentInterface component = DaggerAddPhotoScheduleComponentInterface.builder()
+                .baseApplicationComponentInterface(((BaseApplication) this.getApplication()).getComponent())
+                .addPhotoScheduleComponentModule(new AddPhotoScheduleComponentModule(this))
+                .build();
+        component.inject(this);
+
+        this.init();
+    }
+
+    private void init() {
         this.setBackButton();
         this.tintActionBarTextColor();
     }
@@ -46,7 +93,7 @@ public class AddPhotoScheduleActivity extends AppCompatActivity {
             return;
         }
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle("Add new Photo");
+        actionBar.setTitle(R.string.add_photo_component_title);
     }
 
     private void tintActionBarTextColor() {
@@ -73,7 +120,6 @@ public class AddPhotoScheduleActivity extends AppCompatActivity {
 
     @OnClick(R.id.photoDate)
     public void onPhotoDateClicked(final TextView textView) {
-        final Calendar calendar = Calendar.getInstance();
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 this,
@@ -81,13 +127,13 @@ public class AddPhotoScheduleActivity extends AppCompatActivity {
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        calendar.set(year, month, dayOfMonth);
-                        textView.setText(SimpleDateFormat.getDateInstance().format(calendar.getTime()));
+                        AddPhotoScheduleActivity.this.calendar.set(year, month, dayOfMonth);
+                        textView.setText(SimpleDateFormat.getDateInstance().format(AddPhotoScheduleActivity.this.calendar.getTime()));
                     }
                 },
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)
+                AddPhotoScheduleActivity.this.calendar.get(Calendar.YEAR),
+                AddPhotoScheduleActivity.this.calendar.get(Calendar.MONTH),
+                AddPhotoScheduleActivity.this.calendar.get(Calendar.DAY_OF_MONTH)
         );
 
         datePickerDialog.show();
@@ -95,24 +141,81 @@ public class AddPhotoScheduleActivity extends AppCompatActivity {
 
     @OnClick(R.id.photoTime)
     public void onPhotoTimeClicked(final TextView textView) {
-        final Calendar calendar = Calendar.getInstance();
-
         TimePickerDialog datePickerDialog = new TimePickerDialog(
                 this,
                 0,
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                        calendar.set(Calendar.MINUTE, minute);
-                        textView.setText(SimpleDateFormat.getTimeInstance().format(calendar.getTime()));
+                        AddPhotoScheduleActivity.this.calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        AddPhotoScheduleActivity.this.calendar.set(Calendar.MINUTE, minute);
+                        textView.setText(SimpleDateFormat.getTimeInstance().format(AddPhotoScheduleActivity.this.calendar.getTime()));
                     }
                 },
-                calendar.get(Calendar.HOUR_OF_DAY),
-                calendar.get(Calendar.MINUTE),
+                AddPhotoScheduleActivity.this.calendar.get(Calendar.HOUR_OF_DAY),
+                AddPhotoScheduleActivity.this.calendar.get(Calendar.MINUTE),
                 true
         );
 
         datePickerDialog.show();
+    }
+
+    @OnClick(R.id.photoImagePreviewContainer)
+    public void onPhotoImagePreviewContainerClicked() {
+        Intent chooserIntent = Intent
+                .createChooser(
+                        new Intent(Intent.ACTION_GET_CONTENT).setType("image/*"),
+                        "Search for a Photo")
+                .putExtra(
+                        Intent.EXTRA_INITIAL_INTENTS,
+                        new Intent[]{
+                                new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI).setType("image/*")
+                        }
+                );
+
+        this.startActivityForResult(chooserIntent, REQUEST_CODE_SEARCH_PHOTO);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_SEARCH_PHOTO) {
+            if (resultCode == Activity.RESULT_OK && data.getData() != null) {
+                this.onPhotoLoaded(data.getData());
+            }
+            return;
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void onPhotoLoaded(Uri photoUri) {
+        ViewUtil.makeViewGone(this.photoTapToSearchLabel);
+        Picasso.with(this).load(photoUri).centerCrop().fit().into(this.photoImagePreview);
+
+        try {
+            this.photoBuffer = ByteUtil.convertInputStreamToByteArray(this.getContentResolver().openInputStream(photoUri));
+        } catch (FileNotFoundException e) {
+            LogUtil.log("Could not parse image to byte[]", e);
+        }
+    }
+
+    @OnClick(R.id.btnSavePhoto)
+    public void onBtnSavePhotoClicked() {
+        Photo photo = new Photo();
+
+        photo.setName(this.photoName.getText().toString())
+                .setCaption(this.photoCaption.getText().toString())
+                .setBuffer(this.photoBuffer)
+                .setDate(this.calendar.getTime());
+
+        if (!Photo.validate(photo)) {
+            DialogUtil.showAlertDialog(this, this.getString(R.string.dialog_user_info_error_title), this.getString(R.string.add_photo_component_dialog_save_photo_error_message), this.getString(android.R.string.ok));
+            return;
+        }
+
+        this.savePhotoUseCase.save(photo);
+
+        this.setResult(Activity.RESULT_OK);
+        this.finish();
     }
 }

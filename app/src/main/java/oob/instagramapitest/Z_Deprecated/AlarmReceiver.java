@@ -18,8 +18,7 @@ import java.io.IOException;
 import dev.niekirk.com.instagram4android.Instagram4Android;
 import dev.niekirk.com.instagram4android.requests.InstagramUploadPhotoRequest;
 import io.realm.Realm;
-import oob.instagramapitest.Z_Deprecated.Database.Model.Photo;
-import oob.instagramapitest.R;
+import oob.instagramapitest.Util.Database.Photo;
 
 public class AlarmReceiver extends BroadcastReceiver {
     private static final String TAG = "AlarmReceiver";
@@ -134,7 +133,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 log("doInBackground: Decode byte array and compress to JPG");
 
                 FileOutputStream fos = new FileOutputStream(photoCached);
-                Bitmap bitmap = BitmapFactory.decodeByteArray(photo.getFileBuffer(), 0, photo.getFileBuffer().length);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(photo.getBuffer(), 0, photo.getBuffer().length);
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
 
                 fos.close();

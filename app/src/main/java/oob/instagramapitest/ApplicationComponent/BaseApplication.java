@@ -2,10 +2,9 @@ package oob.instagramapitest.ApplicationComponent;
 
 import android.app.Application;
 
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import oob.instagramapitest.ApplicationComponent.DependencyInjection.BaseApplicationComponentInterface;
 import oob.instagramapitest.ApplicationComponent.DependencyInjection.DaggerBaseApplicationComponentInterface;
+import oob.instagramapitest.ApplicationComponent.DependencyInjection.DatabaseModule;
 import oob.instagramapitest.ApplicationComponent.DependencyInjection.PreferencesModule;
 
 public class BaseApplication extends Application {
@@ -20,10 +19,8 @@ public class BaseApplication extends Application {
         // ------------ DAGGER - DI -------------- //;
         this.component = DaggerBaseApplicationComponentInterface.builder()
                 .preferencesModule(new PreferencesModule(this, PREFERENCES_NAME))
+                .databaseModule(new DatabaseModule(this))
                 .build();
-
-        Realm.init(this);
-        Realm.setDefaultConfiguration(new RealmConfiguration.Builder().deleteRealmIfMigrationNeeded().build());
     }
 
     public BaseApplicationComponentInterface getComponent() {

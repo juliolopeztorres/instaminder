@@ -113,7 +113,7 @@ public class HomeActivity extends AppCompatActivity implements ViewInterface {
             } else {
                 DialogUtil.showAlertDialog(
                         this,
-                        this.getString(R.string.home_component_dialog_user_info_warning_title),
+                        this.getString(R.string.dialog_user_info_warning_title),
                         this.getString(R.string.home_component_dialog_user_info_error_message),
                         this.getString(R.string.home_component_dialog_user_info_action_label),
                         new DialogInterface.OnClickListener() {
@@ -143,7 +143,7 @@ public class HomeActivity extends AppCompatActivity implements ViewInterface {
             public void run() {
                 DialogUtil.showAlertDialog(
                         HomeActivity.this,
-                        HomeActivity.this.getString(R.string.home_component_dialog_user_info_error_title),
+                        HomeActivity.this.getString(R.string.dialog_user_info_error_title),
                         message,
                         HomeActivity.this.getString(android.R.string.ok)
                 );
@@ -221,11 +221,11 @@ public class HomeActivity extends AppCompatActivity implements ViewInterface {
         }
 
         photo.setId(UUID.randomUUID().toString());
-        photo.setFileBuffer(buffer);
+        photo.setBuffer(buffer);
         photo.setCaption("Awesome photo");
 
         photo2.setId(UUID.randomUUID().toString());
-        photo2.setFileBuffer(buffer);
+        photo2.setBuffer(buffer);
         photo2.setCaption("HEY YO");
 
         try {
