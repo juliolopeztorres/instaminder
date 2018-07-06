@@ -6,8 +6,10 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import oob.instagramapitest.ApplicationComponent.DependencyInjection.BaseApplicationComponentInterface;
 import oob.instagramapitest.ApplicationComponent.DependencyInjection.DaggerBaseApplicationComponentInterface;
+import oob.instagramapitest.ApplicationComponent.DependencyInjection.PreferencesModule;
 
 public class BaseApplication extends Application {
+    private static final String PREFERENCES_NAME = "instaminder_preferences";
 
     private BaseApplicationComponentInterface component;
 
@@ -17,6 +19,7 @@ public class BaseApplication extends Application {
 
         // ------------ DAGGER - DI -------------- //;
         this.component = DaggerBaseApplicationComponentInterface.builder()
+                .preferencesModule(new PreferencesModule(this, PREFERENCES_NAME))
                 .build();
 
         Realm.init(this);

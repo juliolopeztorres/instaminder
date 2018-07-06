@@ -42,6 +42,7 @@
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="@string/home_component_card_photo_add_new_photo_label"
+                android:textStyle="bold"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/photoStateIndicator"

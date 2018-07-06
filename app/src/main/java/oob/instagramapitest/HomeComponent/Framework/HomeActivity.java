@@ -1,8 +1,10 @@
 package oob.instagramapitest.HomeComponent.Framework;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -24,25 +26,33 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 import oob.instagramapitest.ApplicationComponent.BaseApplication;
+import oob.instagramapitest.HomeComponent.Domain.CheckNickPasswordStoredUseCase.CheckNickPasswordStoredUseCase;
+import oob.instagramapitest.HomeComponent.Domain.ViewInterface;
 import oob.instagramapitest.HomeComponent.Framework.Adapter.PhotoCardAdapter;
 import oob.instagramapitest.HomeComponent.Framework.DependencyInjection.DaggerHomeComponentInterface;
 import oob.instagramapitest.HomeComponent.Framework.DependencyInjection.HomeComponentInterface;
 import oob.instagramapitest.HomeComponent.Framework.DependencyInjection.HomeComponentModule;
 import oob.instagramapitest.OptionsComponent.Framework.OptionsActivity;
+import oob.instagramapitest.Util.DialogUtil;
 import oob.instagramapitest.Z_Deprecated.AlarmReceiver;
 import oob.instagramapitest.Z_Deprecated.Database.Model.Photo;
 import oob.instagramapitest.R;
 
-public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
-
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener, ViewInterface {
+    private static final String TAG = "HomeActivity";
     private Realm realm;
 
     @BindView(R.id.photoCardRecyclerView)
     RecyclerView photoCardRecyclerView;
+
+    @Inject
+    CheckNickPasswordStoredUseCase checkNickPasswordStoredUseCase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +66,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 .homeComponentModule(new HomeComponentModule(this))
                 .build();
         component.inject(this);
+
+        if (!this.checkNickPasswordStoredUseCase.check()) {
+            this.goToOptionsComponent();
+        }
 
         this.realm = Realm.getDefaultInstance();
 
@@ -84,11 +98,39 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         // this.realm.where(Photo.class).greaterThanOrEqualTo("date", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).parse("2018-07-02 13:00:00")).findAll()
     }
 
+    private void goToOptionsComponent() {
+        this.startActivityForResult(new Intent(this, OptionsActivity.class), OptionsActivity.REQUEST_CODE_SAVE_USER_INFORMATION);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == OptionsActivity.REQUEST_CODE_SAVE_USER_INFORMATION) {
+            if (resultCode != Activity.RESULT_OK) {
+                DialogUtil.showAlertDialog(
+                        this,
+                        this.getString(R.string.home_component_dialog_user_info_error_title),
+                        this.getString(R.string.home_component_dialog_user_info_error_message),
+                        this.getString(R.string.home_component_dialog_user_info_action_label),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                HomeActivity.this.goToOptionsComponent();
+                            }
+                        },
+                        true);
+            }
+
+            return;
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         this.getMenuInflater().inflate(R.menu.menu_home_component, menu);
 
-        ((TextView) menu.getItem(0).getActionView().findViewById(R.id.following)).setText(String.format(this.getString(R.string.home_component_follow_followers_format), "1234", "1234"));
+        ((TextView) menu.getItem(0).getActionView().findViewById(R.id.following)).setText(String.format(this.getString(R.string.home_component_follow_followers_format), "--", "--"));
 
         return true;
     }

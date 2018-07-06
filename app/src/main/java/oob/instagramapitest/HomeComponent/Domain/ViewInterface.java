@@ -1,0 +1,6 @@
+package oob.instagramapitest.HomeComponent.Domain;
+
+import oob.instagramapitest.HomeComponent.Domain.CheckNickPasswordStoredUseCase.CheckNickPasswordStoredUseCaseViewInterface;
+
+public interface ViewInterface extends CheckNickPasswordStoredUseCaseViewInterface {
+}
