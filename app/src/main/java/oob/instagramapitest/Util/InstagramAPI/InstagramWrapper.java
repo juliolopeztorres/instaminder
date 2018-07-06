@@ -101,3 +101,25 @@ public class InstagramWrapper {
         }
     }
 }
+
+// Upload a video
+    /*File video = new File(getCacheDir() + "/example_video_cached.mp4");
+    if (!video.exists())
+        try {
+
+            InputStream is = getAssets().open("example_video.mp4");
+            byte[] buffer = new byte[is.available()];
+            is.read(buffer);
+            is.close();
+
+
+            FileOutputStream fos = new FileOutputStream(video);
+            fos.write(buffer);
+            fos.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    instagram.sendRequest(new CustomInstagramUploadVideoRequest(video, "Amazing video", HomeActivity.this));
+
+    video.deleteOnExit();*/

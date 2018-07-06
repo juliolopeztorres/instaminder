@@ -20,6 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import oob.instagramapitest.ApplicationComponent.BaseApplication;
 import oob.instagramapitest.HomeComponent.Domain.CheckNickPasswordStoredUseCase.CheckNickPasswordStoredUseCase;
+import oob.instagramapitest.HomeComponent.Domain.GetAllPhotosUseCase.GetAllPhotosUseCase;
 import oob.instagramapitest.HomeComponent.Domain.GetInstagramUserInformationUseCase.GetInstagramUserInformationUseCase;
 import oob.instagramapitest.HomeComponent.Domain.GetInstagramUserInformationUseCase.Model.InstagramUserInformation;
 import oob.instagramapitest.HomeComponent.Domain.LoginWithNewInformationUseCase.LoginWithNewInformationUseCase;
@@ -44,8 +45,11 @@ public class HomeActivity extends AppCompatActivity implements ViewInterface {
     GetInstagramUserInformationUseCase getInstagramUserInformationUseCase;
     @Inject
     LoginWithNewInformationUseCase loginWithNewInformationUseCase;
+    @Inject
+    GetAllPhotosUseCase getAllPhotosUseCase;
 
     private View followersIndicator;
+    private PhotoCardAdapter photoCardAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,26 +64,7 @@ public class HomeActivity extends AppCompatActivity implements ViewInterface {
                 .build();
         component.inject(this);
 
-        // this.realm = Realm.getDefaultInstance();
-
         this.init();
-
-        /*this.realm = Realm.getDefaultInstance();
-
-        Button uploadButton = this.findViewById(R.id.uploadButton);
-        uploadButton.setOnClickListener(this);*/
-
-        /*this.realm.beginTransaction();
-        this.realm.delete(Photo.class);
-        this.realm.commitTransaction();*/
-
-        // this.addMockPhotos();
-
-        // GET PHOTO STUFF
-        //List<Photo> photos = this.realm.where(Photo.class).findAll();
-
-        // Find
-        // this.realm.where(Photo.class).greaterThanOrEqualTo("date", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).parse("2018-07-02 13:00:00")).findAll()
     }
 
     private void init() {
@@ -96,9 +81,29 @@ public class HomeActivity extends AppCompatActivity implements ViewInterface {
         this.loginWithNewInformationUseCase.login();
     }
 
+    private void tintActionBarTextColor() {
+        Toolbar actionBarToolbar = this.findViewById(R.id.action_bar);
+        if (actionBarToolbar != null) {
+            actionBarToolbar.setTitleTextColor(this.getResources().getColor(R.color.colorPrimary));
+            actionBarToolbar.setBackgroundColor(this.getResources().getColor(R.color.colorAccentWhite));
+        }
+    }
+
+    private void setUpHomeIcon() {
+        ActionBar actionBar = this.getSupportActionBar();
+        if (actionBar == null) {
+            return;
+        }
+
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_option_primary);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
     private void setUpPhotoCardList() {
         this.photoCardRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        this.photoCardRecyclerView.setAdapter(new PhotoCardAdapter());
+
+        this.photoCardAdapter = new PhotoCardAdapter();
+        this.photoCardRecyclerView.setAdapter(this.photoCardAdapter);
     }
 
     private void goToOptionsComponent() {
@@ -187,107 +192,10 @@ public class HomeActivity extends AppCompatActivity implements ViewInterface {
         return super.onOptionsItemSelected(item);
     }
 
-    private void tintActionBarTextColor() {
-        Toolbar actionBarToolbar = this.findViewById(R.id.action_bar);
-        if (actionBarToolbar != null) {
-            actionBarToolbar.setTitleTextColor(this.getResources().getColor(R.color.colorPrimary));
-            actionBarToolbar.setBackgroundColor(this.getResources().getColor(R.color.colorAccentWhite));
-        }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        this.photoCardAdapter.setPhotos(this.getAllPhotosUseCase.getAll());
     }
-
-    private void setUpHomeIcon() {
-        ActionBar actionBar = this.getSupportActionBar();
-        if (actionBar == null) {
-            return;
-        }
-
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_option_primary);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-    }
-
-    /*private void addMockPhotos() {
-        final Photo photo = new Photo();
-        final Photo photo2 = new Photo();
-
-        byte[] buffer;
-
-        try {
-            InputStream is = getAssets().open("example_image.jpg");
-            buffer = new byte[is.available()];
-            is.read(buffer);
-            is.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        photo.setId(UUID.randomUUID().toString());
-        photo.setBuffer(buffer);
-        photo.setCaption("Awesome photo");
-
-        photo2.setId(UUID.randomUUID().toString());
-        photo2.setBuffer(buffer);
-        photo2.setCaption("HEY YO");
-
-        try {
-            photo.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).parse("2018-07-03 16:22:00"));
-            photo2.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).parse("2018-07-03 14:30:00"));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        List<Photo> photos = new ArrayList<Photo>() {{
-            add(photo);
-            add(photo2);
-        }};
-
-        this.realm.beginTransaction();
-        this.realm.insertOrUpdate(photos);
-        this.realm.commitTransaction();
-    }*/
-
-    /*@Override
-    public void onClick(View v) {
-        Intent alarmIntent = new Intent(this, AlarmReceiver.class);
-
-        Photo photo = this.realm.where(Photo.class).findFirst();
-
-        alarmIntent.putExtra("photoId", photo.getId());
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
-
-        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        if (manager == null) {
-            Toast.makeText(this, "Could not scheduled the upload as there is no Alarm manager on Device", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        manager.setAlarmClock(new AlarmManager.AlarmClockInfo(
-                photo.getDate().getTime()
-                // Calendar.getInstance().getTimeInMillis() + 5 * 60 * 1000
-                , null), pendingIntent);
-
-        Toast.makeText(this, "Photo Scheduled correctly. Wait for it", Toast.LENGTH_LONG).show();
-    }*/
-
-    // Upload a video
-    /*File video = new File(getCacheDir() + "/example_video_cached.mp4");
-    if (!video.exists())
-        try {
-
-            InputStream is = getAssets().open("example_video.mp4");
-            byte[] buffer = new byte[is.available()];
-            is.read(buffer);
-            is.close();
-
-
-            FileOutputStream fos = new FileOutputStream(video);
-            fos.write(buffer);
-            fos.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-    instagram.sendRequest(new CustomInstagramUploadVideoRequest(video, "Amazing video", HomeActivity.this));
-
-    video.deleteOnExit();*/
 }

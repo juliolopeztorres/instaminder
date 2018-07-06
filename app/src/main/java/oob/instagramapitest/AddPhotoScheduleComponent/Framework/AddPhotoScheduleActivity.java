@@ -19,7 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
@@ -120,7 +120,6 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
 
     @OnClick(R.id.photoDate)
     public void onPhotoDateClicked(final TextView textView) {
-
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 this,
                 0,
@@ -190,7 +189,7 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
 
     private void onPhotoLoaded(Uri photoUri) {
         ViewUtil.makeViewGone(this.photoTapToSearchLabel);
-        Picasso.with(this).load(photoUri).centerCrop().fit().into(this.photoImagePreview);
+        Glide.with(this).load(photoUri).into(this.photoImagePreview);
 
         try {
             this.photoBuffer = ByteUtil.convertInputStreamToByteArray(this.getContentResolver().openInputStream(photoUri));
@@ -219,3 +218,27 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
         this.finish();
     }
 }
+
+/*@Override
+    public void onClick(View v) {
+        Intent alarmIntent = new Intent(this, AlarmReceiver.class);
+
+        Photo photo = this.realm.where(Photo.class).findFirst();
+
+        alarmIntent.putExtra("photoId", photo.getId());
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
+
+        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        if (manager == null) {
+            Toast.makeText(this, "Could not scheduled the upload as there is no Alarm manager on Device", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        manager.setAlarmClock(new AlarmManager.AlarmClockInfo(
+                photo.getDate().getTime()
+                // Calendar.getInstance().getTimeInMillis() + 5 * 60 * 1000
+                , null), pendingIntent);
+
+        Toast.makeText(this, "Photo Scheduled correctly. Wait for it", Toast.LENGTH_LONG).show();
+    }*/

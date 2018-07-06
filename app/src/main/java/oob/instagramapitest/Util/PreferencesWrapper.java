@@ -5,6 +5,9 @@ import android.content.SharedPreferences;
 import oob.instagramapitest.ApplicationComponent.ApplicationConstant;
 
 public class PreferencesWrapper {
+    private String PREFERENCES_NICK_KEY = "preferences_nick_key";
+    private String PREFERENCES_PASSWORD_KEY = "preferences_password_key";
+
     private SharedPreferences preferences;
 
     public PreferencesWrapper(SharedPreferences preferences) {
@@ -12,17 +15,17 @@ public class PreferencesWrapper {
     }
 
     public String getUsername() {
-        return this.preferences.getString(ApplicationConstant.PREFERENCES_NICK_KEY, "");
+        return this.preferences.getString(PREFERENCES_NICK_KEY, "");
     }
 
     public String getPassword() {
-        return this.preferences.getString(ApplicationConstant.PREFERENCES_PASSWORD_KEY, "");
+        return this.preferences.getString(PREFERENCES_PASSWORD_KEY, "");
     }
 
     public void saveUserLoginInformation(String nick, String password) {
         this.preferences.edit()
-                .putString(ApplicationConstant.PREFERENCES_NICK_KEY, nick)
-                .putString(ApplicationConstant.PREFERENCES_PASSWORD_KEY, password)
+                .putString(PREFERENCES_NICK_KEY, nick)
+                .putString(PREFERENCES_PASSWORD_KEY, password)
                 .apply();
     }
 }

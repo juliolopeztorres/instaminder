@@ -2,11 +2,15 @@ package oob.instagramapitest.HomeComponent.Framework.DependencyInjection;
 
 import dagger.Module;
 import dagger.Provides;
+import io.realm.Realm;
 import oob.instagramapitest.HomeComponent.Data.CheckNickPasswordStoredUseCase.CheckNickPasswordStoredUseCaseRepository;
+import oob.instagramapitest.HomeComponent.Data.GetAllPhotosUseCase.GetAllPhotosUseCaseRepository;
 import oob.instagramapitest.HomeComponent.Data.GetInstagramUserInformationUseCase.GetInstagramUserInformationUseCaseRepository;
 import oob.instagramapitest.HomeComponent.Data.LoginWithNewInformationUseCase.LoginWithNewInformationUseCaseRepository;
 import oob.instagramapitest.HomeComponent.Domain.CheckNickPasswordStoredUseCase.CheckNickPasswordStoredUseCaseRepositoryInterface;
 import oob.instagramapitest.HomeComponent.Domain.CheckNickPasswordStoredUseCase.CheckNickPasswordStoredUseCaseViewInterface;
+import oob.instagramapitest.HomeComponent.Domain.GetAllPhotosUseCase.GetAllPhotosUseCaseRepositoryInterface;
+import oob.instagramapitest.HomeComponent.Domain.GetAllPhotosUseCase.GetAllPhotosUseCaseViewInterface;
 import oob.instagramapitest.HomeComponent.Domain.GetInstagramUserInformationUseCase.GetInstagramUserInformationUseCaseRepositoryInterface;
 import oob.instagramapitest.HomeComponent.Domain.GetInstagramUserInformationUseCase.GetInstagramUserInformationUseCaseViewInterface;
 import oob.instagramapitest.HomeComponent.Domain.LoginWithNewInformationUseCase.LoginWithNewInformationUseCaseRepositoryInterface;
@@ -57,5 +61,17 @@ public class HomeComponentModule {
     @HomeComponentScopeInterface
     LoginWithNewInformationUseCaseRepositoryInterface provideLoginWithNewInformationUseCaseRepositoryInterface(InstagramWrapper instagramWrapper, PreferencesWrapper preferencesWrapper) {
         return new LoginWithNewInformationUseCaseRepository(instagramWrapper, preferencesWrapper);
+    }
+
+    @Provides
+    @HomeComponentScopeInterface
+    GetAllPhotosUseCaseViewInterface provideGetAllPhotosUseCaseViewInterface() {
+        return this.viewInterface;
+    }
+
+    @Provides
+    @HomeComponentScopeInterface
+    GetAllPhotosUseCaseRepositoryInterface provideGetAllPhotosUseCaseRepositoryInterface(Realm realm) {
+        return new GetAllPhotosUseCaseRepository(realm);
     }
 }

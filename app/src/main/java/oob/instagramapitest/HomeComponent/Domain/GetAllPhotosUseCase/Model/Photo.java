@@ -1,14 +1,15 @@
-package oob.instagramapitest.AddPhotoScheduleComponent.Domain.SavePhotoUseCase.Model;
+package oob.instagramapitest.HomeComponent.Domain.GetAllPhotosUseCase.Model;
 
 import java.util.Date;
 
 public class Photo {
-    private static final int PHOTO_BUFFER_MAX_LENGTH = 16777200;
-
     private String name;
     private String caption;
     private Date date;
     private byte[] buffer;
+
+    @oob.instagramapitest.Util.Database.Photo.State
+    private String state;
 
     public String getName() {
         return name;
@@ -46,10 +47,12 @@ public class Photo {
         return this;
     }
 
-    public static boolean validate(Photo photo) {
-        return !photo.getName().isEmpty() &&
-                !photo.getCaption().isEmpty() &&
-                photo.getDate() != null &&
-                photo.getBuffer() != null && photo.getBuffer().length > 0 && photo.getBuffer().length <= PHOTO_BUFFER_MAX_LENGTH;
+    public String getState() {
+        return state;
+    }
+
+    public Photo setState(String state) {
+        this.state = state;
+        return this;
     }
 }

@@ -16,7 +16,8 @@ public class Photo extends RealmObject {
 
     @StringDef({PENDING, ERROR})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface State {}
+    public @interface State {
+    }
 
     @PrimaryKey
     private String id;
@@ -93,3 +94,54 @@ public class Photo extends RealmObject {
         return this;
     }
 }
+
+// GET PHOTO STUFF
+//List<Photo> photos = this.realm.where(Photo.class).findAll();
+
+// Remove all
+        /*this.realm.beginTransaction();
+        this.realm.delete(Photo.class);
+        this.realm.commitTransaction();*/
+
+// Find
+// this.realm.where(Photo.class).greaterThanOrEqualTo("date", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).parse("2018-07-02 13:00:00")).findAll()
+
+ /*private void addMockPhotos() {
+        final Photo photo = new Photo();
+        final Photo photo2 = new Photo();
+
+        byte[] buffer;
+
+        try {
+            InputStream is = getAssets().open("example_image.jpg");
+            buffer = new byte[is.available()];
+            is.read(buffer);
+            is.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        photo.setId(UUID.randomUUID().toString());
+        photo.setBuffer(buffer);
+        photo.setCaption("Awesome photo");
+
+        photo2.setId(UUID.randomUUID().toString());
+        photo2.setBuffer(buffer);
+        photo2.setCaption("HEY YO");
+
+        try {
+            photo.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).parse("2018-07-03 16:22:00"));
+            photo2.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).parse("2018-07-03 14:30:00"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        List<Photo> photos = new ArrayList<Photo>() {{
+            add(photo);
+            add(photo2);
+        }};
+
+        this.realm.beginTransaction();
+        this.realm.insertOrUpdate(photos);
+        this.realm.commitTransaction();
+    }*/
