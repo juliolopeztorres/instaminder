@@ -5,20 +5,19 @@ import android.content.SharedPreferences;
 
 import dagger.Module;
 import dagger.Provides;
+import oob.instagramapitest.Util.PreferencesWrapper;
 
 @Module
 public class PreferencesModule {
-    private Context context;
-    private String preferencesName;
+    private SharedPreferences preferences;
 
     public PreferencesModule(Context context, String preferencesName) {
-        this.context = context;
-        this.preferencesName = preferencesName;
+        this.preferences = context.getSharedPreferences(preferencesName, Context.MODE_PRIVATE);
     }
 
     @Provides
     @BaseApplicationScopeInterface
-    SharedPreferences providePreferences() {
-        return this.context.getSharedPreferences(this.preferencesName, Context.MODE_PRIVATE);
+    PreferencesWrapper providePreferencesWrapper() {
+        return new PreferencesWrapper(this.preferences);
     }
 }

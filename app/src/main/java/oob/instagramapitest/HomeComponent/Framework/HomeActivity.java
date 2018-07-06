@@ -1,9 +1,6 @@
 package oob.instagramapitest.HomeComponent.Framework;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
@@ -16,23 +13,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.io.InputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.realm.Realm;
 import oob.instagramapitest.ApplicationComponent.BaseApplication;
 import oob.instagramapitest.HomeComponent.Domain.CheckNickPasswordStoredUseCase.CheckNickPasswordStoredUseCase;
+import oob.instagramapitest.HomeComponent.Domain.GetInstagramUserInformationUseCase.GetInstagramUserInformationUseCase;
+import oob.instagramapitest.HomeComponent.Domain.GetInstagramUserInformationUseCase.Model.InstagramUserInformation;
+import oob.instagramapitest.HomeComponent.Domain.LoginWithNewInformationUseCase.LoginWithNewInformationUseCase;
 import oob.instagramapitest.HomeComponent.Domain.ViewInterface;
 import oob.instagramapitest.HomeComponent.Framework.Adapter.PhotoCardAdapter;
 import oob.instagramapitest.HomeComponent.Framework.DependencyInjection.DaggerHomeComponentInterface;
@@ -40,19 +30,22 @@ import oob.instagramapitest.HomeComponent.Framework.DependencyInjection.HomeComp
 import oob.instagramapitest.HomeComponent.Framework.DependencyInjection.HomeComponentModule;
 import oob.instagramapitest.OptionsComponent.Framework.OptionsActivity;
 import oob.instagramapitest.Util.DialogUtil;
-import oob.instagramapitest.Z_Deprecated.AlarmReceiver;
-import oob.instagramapitest.Z_Deprecated.Database.Model.Photo;
 import oob.instagramapitest.R;
 
-public class HomeActivity extends AppCompatActivity implements View.OnClickListener, ViewInterface {
+public class HomeActivity extends AppCompatActivity implements ViewInterface {
     private static final String TAG = "HomeActivity";
-    private Realm realm;
 
     @BindView(R.id.photoCardRecyclerView)
     RecyclerView photoCardRecyclerView;
 
     @Inject
     CheckNickPasswordStoredUseCase checkNickPasswordStoredUseCase;
+    @Inject
+    GetInstagramUserInformationUseCase getInstagramUserInformationUseCase;
+    @Inject
+    LoginWithNewInformationUseCase loginWithNewInformationUseCase;
+
+    private View followersIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,18 +60,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 .build();
         component.inject(this);
 
-        if (!this.checkNickPasswordStoredUseCase.check()) {
-            this.goToOptionsComponent();
-        }
+        // this.realm = Realm.getDefaultInstance();
 
-        this.realm = Realm.getDefaultInstance();
-
-        this.setUpHomeIcon();
-        this.tintActionBarTextColor();
-        this.setTitle("@Name");
-
-        this.photoCardRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        this.photoCardRecyclerView.setAdapter(new PhotoCardAdapter());
+        this.init();
 
         /*this.realm = Realm.getDefaultInstance();
 
@@ -98,6 +82,25 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         // this.realm.where(Photo.class).greaterThanOrEqualTo("date", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).parse("2018-07-02 13:00:00")).findAll()
     }
 
+    private void init() {
+        this.setUpHomeIcon();
+        this.tintActionBarTextColor();
+
+        this.setUpPhotoCardList();
+
+        if (!this.checkNickPasswordStoredUseCase.check()) {
+            this.goToOptionsComponent();
+            return;
+        }
+
+        this.loginWithNewInformationUseCase.login();
+    }
+
+    private void setUpPhotoCardList() {
+        this.photoCardRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        this.photoCardRecyclerView.setAdapter(new PhotoCardAdapter());
+    }
+
     private void goToOptionsComponent() {
         this.startActivityForResult(new Intent(this, OptionsActivity.class), OptionsActivity.REQUEST_CODE_SAVE_USER_INFORMATION);
     }
@@ -105,10 +108,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == OptionsActivity.REQUEST_CODE_SAVE_USER_INFORMATION) {
-            if (resultCode != Activity.RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK) {
+                this.loginWithNewInformationUseCase.login();
+            } else {
                 DialogUtil.showAlertDialog(
                         this,
-                        this.getString(R.string.home_component_dialog_user_info_error_title),
+                        this.getString(R.string.home_component_dialog_user_info_warning_title),
                         this.getString(R.string.home_component_dialog_user_info_error_message),
                         this.getString(R.string.home_component_dialog_user_info_action_label),
                         new DialogInterface.OnClickListener() {
@@ -127,10 +132,48 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    public void onLoginSuccess() {
+        this.getInstagramUserInformationUseCase.get();
+    }
+
+    @Override
+    public void showError(final String message) {
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                DialogUtil.showAlertDialog(
+                        HomeActivity.this,
+                        HomeActivity.this.getString(R.string.home_component_dialog_user_info_error_title),
+                        message,
+                        HomeActivity.this.getString(android.R.string.ok)
+                );
+            }
+        });
+    }
+
+    @Override
+    public void onGetUserInformationSuccess(final InstagramUserInformation instagramUserInformation) {
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                HomeActivity.this.setTitle("@" + instagramUserInformation.getNick());
+
+                if (HomeActivity.this.followersIndicator != null) {
+                    ((TextView) HomeActivity.this.followersIndicator.findViewById(R.id.following))
+                            .setText(
+                                    String.format(HomeActivity.this.getString(R.string.home_component_follow_followers_format), instagramUserInformation.getFollowing(), instagramUserInformation.getFollowers())
+                            );
+                }
+            }
+        });
+
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         this.getMenuInflater().inflate(R.menu.menu_home_component, menu);
 
-        ((TextView) menu.getItem(0).getActionView().findViewById(R.id.following)).setText(String.format(this.getString(R.string.home_component_follow_followers_format), "--", "--"));
+        this.followersIndicator = menu.getItem(0).getActionView();
 
         return true;
     }
@@ -138,7 +181,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            this.startActivity(new Intent(this, OptionsActivity.class));
+            this.goToOptionsComponent();
         }
 
         return super.onOptionsItemSelected(item);
@@ -162,7 +205,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
-    private void addMockPhotos() {
+    /*private void addMockPhotos() {
         final Photo photo = new Photo();
         final Photo photo2 = new Photo();
 
@@ -200,9 +243,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         this.realm.beginTransaction();
         this.realm.insertOrUpdate(photos);
         this.realm.commitTransaction();
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void onClick(View v) {
         Intent alarmIntent = new Intent(this, AlarmReceiver.class);
 
@@ -224,7 +267,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 , null), pendingIntent);
 
         Toast.makeText(this, "Photo Scheduled correctly. Wait for it", Toast.LENGTH_LONG).show();
-    }
+    }*/
 
     // Upload a video
     /*File video = new File(getCacheDir() + "/example_video_cached.mp4");

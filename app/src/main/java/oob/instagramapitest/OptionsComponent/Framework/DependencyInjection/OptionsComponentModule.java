@@ -1,7 +1,5 @@
 package oob.instagramapitest.OptionsComponent.Framework.DependencyInjection;
 
-import android.content.SharedPreferences;
-
 import dagger.Module;
 import dagger.Provides;
 import oob.instagramapitest.OptionsComponent.Data.GetUserInformationUseCase.GetUserInformationUseCaseRepository;
@@ -11,6 +9,7 @@ import oob.instagramapitest.OptionsComponent.Domain.GetUserInformationUseCase.Ge
 import oob.instagramapitest.OptionsComponent.Domain.SaveUserInformationUseCase.SaveUserInformationUseCaseRepositoryInterface;
 import oob.instagramapitest.OptionsComponent.Domain.SaveUserInformationUseCase.SaveUserInformationUseCaseViewInterface;
 import oob.instagramapitest.OptionsComponent.Domain.ViewInterface;
+import oob.instagramapitest.Util.PreferencesWrapper;
 
 @Module
 public class OptionsComponentModule {
@@ -28,8 +27,8 @@ public class OptionsComponentModule {
 
     @OptionsComponentScopeInterface
     @Provides
-    SaveUserInformationUseCaseRepositoryInterface provideSaveUserInformationUseCaseRepositoryInterface(SharedPreferences preferences) {
-        return new SaveUserInformationUseCaseRepository(preferences);
+    SaveUserInformationUseCaseRepositoryInterface provideSaveUserInformationUseCaseRepositoryInterface(PreferencesWrapper preferencesWrapper) {
+        return new SaveUserInformationUseCaseRepository(preferencesWrapper);
     }
 
     @OptionsComponentScopeInterface
@@ -40,7 +39,7 @@ public class OptionsComponentModule {
 
     @OptionsComponentScopeInterface
     @Provides
-    GetUserInformationUseCaseRepositoryInterface provideGetUserInformationUseCaseRepositoryInterface(SharedPreferences preferences) {
-        return new GetUserInformationUseCaseRepository(preferences);
+    GetUserInformationUseCaseRepositoryInterface provideGetUserInformationUseCaseRepositoryInterface(PreferencesWrapper preferencesWrapper) {
+        return new GetUserInformationUseCaseRepository(preferencesWrapper);
     }
 }

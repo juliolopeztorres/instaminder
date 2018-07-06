@@ -1,13 +1,19 @@
 package oob.instagramapitest.HomeComponent.Framework.DependencyInjection;
 
-import android.content.SharedPreferences;
-
 import dagger.Module;
 import dagger.Provides;
 import oob.instagramapitest.HomeComponent.Data.CheckNickPasswordStoredUseCase.CheckNickPasswordStoredUseCaseRepository;
+import oob.instagramapitest.HomeComponent.Data.GetInstagramUserInformationUseCase.GetInstagramUserInformationUseCaseRepository;
+import oob.instagramapitest.HomeComponent.Data.LoginWithNewInformationUseCase.LoginWithNewInformationUseCaseRepository;
 import oob.instagramapitest.HomeComponent.Domain.CheckNickPasswordStoredUseCase.CheckNickPasswordStoredUseCaseRepositoryInterface;
 import oob.instagramapitest.HomeComponent.Domain.CheckNickPasswordStoredUseCase.CheckNickPasswordStoredUseCaseViewInterface;
+import oob.instagramapitest.HomeComponent.Domain.GetInstagramUserInformationUseCase.GetInstagramUserInformationUseCaseRepositoryInterface;
+import oob.instagramapitest.HomeComponent.Domain.GetInstagramUserInformationUseCase.GetInstagramUserInformationUseCaseViewInterface;
+import oob.instagramapitest.HomeComponent.Domain.LoginWithNewInformationUseCase.LoginWithNewInformationUseCaseRepositoryInterface;
+import oob.instagramapitest.HomeComponent.Domain.LoginWithNewInformationUseCase.LoginWithNewInformationUseCaseViewInterface;
 import oob.instagramapitest.HomeComponent.Domain.ViewInterface;
+import oob.instagramapitest.Util.InstagramAPI.InstagramWrapper;
+import oob.instagramapitest.Util.PreferencesWrapper;
 
 @Module
 public class HomeComponentModule {
@@ -25,7 +31,31 @@ public class HomeComponentModule {
 
     @Provides
     @HomeComponentScopeInterface
-    CheckNickPasswordStoredUseCaseRepositoryInterface provideCheckNickPasswordStoredUseCaseRepositoryInterface(SharedPreferences preferences) {
-        return new CheckNickPasswordStoredUseCaseRepository(preferences);
+    CheckNickPasswordStoredUseCaseRepositoryInterface provideCheckNickPasswordStoredUseCaseRepositoryInterface(PreferencesWrapper preferencesWrapper) {
+        return new CheckNickPasswordStoredUseCaseRepository(preferencesWrapper);
+    }
+
+    @Provides
+    @HomeComponentScopeInterface
+    GetInstagramUserInformationUseCaseViewInterface provideGetInstagramUserInformationUseCaseViewInterface() {
+        return this.viewInterface;
+    }
+
+    @Provides
+    @HomeComponentScopeInterface
+    GetInstagramUserInformationUseCaseRepositoryInterface provideGetInstagramUserInformationUseCaseRepositoryInterface(InstagramWrapper instagramWrapper, PreferencesWrapper preferencesWrapper) {
+        return new GetInstagramUserInformationUseCaseRepository(instagramWrapper, preferencesWrapper);
+    }
+
+    @Provides
+    @HomeComponentScopeInterface
+    LoginWithNewInformationUseCaseViewInterface provideLoginWithNewInformationUseCaseViewInterface() {
+        return this.viewInterface;
+    }
+
+    @Provides
+    @HomeComponentScopeInterface
+    LoginWithNewInformationUseCaseRepositoryInterface provideLoginWithNewInformationUseCaseRepositoryInterface(InstagramWrapper instagramWrapper, PreferencesWrapper preferencesWrapper) {
+        return new LoginWithNewInformationUseCaseRepository(instagramWrapper, preferencesWrapper);
     }
 }

@@ -1,23 +1,18 @@
 package oob.instagramapitest.OptionsComponent.Data.SaveUserInformationUseCase;
 
-import android.content.SharedPreferences;
-
-import oob.instagramapitest.ApplicationComponent.ApplicationConstant;
 import oob.instagramapitest.OptionsComponent.Domain.SaveUserInformationUseCase.SaveUserInformationUseCaseRepositoryInterface;
+import oob.instagramapitest.Util.PreferencesWrapper;
 
 public class SaveUserInformationUseCaseRepository implements SaveUserInformationUseCaseRepositoryInterface {
 
-    private SharedPreferences preferences;
+    private PreferencesWrapper preferencesWrapper;
 
-    public SaveUserInformationUseCaseRepository(SharedPreferences preferences) {
-        this.preferences = preferences;
+    public SaveUserInformationUseCaseRepository(PreferencesWrapper preferencesWrapper) {
+        this.preferencesWrapper = preferencesWrapper;
     }
 
     @Override
     public void save(String nick, String password) {
-        this.preferences.edit()
-                .putString(ApplicationConstant.PREFERENCES_NICK_KEY, nick)
-                .putString(ApplicationConstant.PREFERENCES_PASSWORD_KEY, password)
-                .apply();
+        this.preferencesWrapper.saveUserLoginInformation(nick, password);
     }
 }

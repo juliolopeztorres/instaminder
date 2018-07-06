@@ -1,4 +1,4 @@
-package oob.instagramapitest.Z_Deprecated.InstagramAPI;
+package oob.instagramapitest.Util.InstagramAPI;
 
 import android.content.Context;
 import android.graphics.Bitmap;

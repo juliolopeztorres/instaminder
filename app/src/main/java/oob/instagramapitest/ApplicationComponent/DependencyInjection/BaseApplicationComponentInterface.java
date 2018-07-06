@@ -1,12 +1,13 @@
 package oob.instagramapitest.ApplicationComponent.DependencyInjection;
 
-
-import android.content.SharedPreferences;
-
 import dagger.Component;
+import oob.instagramapitest.Util.InstagramAPI.InstagramWrapper;
+import oob.instagramapitest.Util.PreferencesWrapper;
 
 @BaseApplicationScopeInterface
-@Component(modules = PreferencesModule.class)
+@Component(modules = {PreferencesModule.class, InstagramModule.class})
 public interface BaseApplicationComponentInterface {
-    SharedPreferences getPreferences();
+    PreferencesWrapper getPreferencesWrapper();
+
+    InstagramWrapper getInstagramWrapper();
 }

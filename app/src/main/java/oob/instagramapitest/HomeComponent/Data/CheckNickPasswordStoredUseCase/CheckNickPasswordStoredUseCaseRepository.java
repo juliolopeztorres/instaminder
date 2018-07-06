@@ -1,20 +1,18 @@
 package oob.instagramapitest.HomeComponent.Data.CheckNickPasswordStoredUseCase;
 
-import android.content.SharedPreferences;
-
-import oob.instagramapitest.ApplicationComponent.ApplicationConstant;
 import oob.instagramapitest.HomeComponent.Domain.CheckNickPasswordStoredUseCase.CheckNickPasswordStoredUseCaseRepositoryInterface;
+import oob.instagramapitest.Util.PreferencesWrapper;
 
 public class CheckNickPasswordStoredUseCaseRepository implements CheckNickPasswordStoredUseCaseRepositoryInterface {
 
-    private SharedPreferences preferences;
+    private PreferencesWrapper preferencesWrapper;
 
-    public CheckNickPasswordStoredUseCaseRepository(SharedPreferences preferences) {
-        this.preferences = preferences;
+    public CheckNickPasswordStoredUseCaseRepository(PreferencesWrapper preferencesWrapper) {
+        this.preferencesWrapper = preferencesWrapper;
     }
 
     @Override
     public boolean check() {
-        return !this.preferences.getString(ApplicationConstant.PREFERENCES_NICK_KEY, "").isEmpty();
+        return !this.preferencesWrapper.getUsername().isEmpty();
     }
 }

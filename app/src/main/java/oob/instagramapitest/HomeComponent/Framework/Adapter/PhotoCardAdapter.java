@@ -27,7 +27,7 @@ public class PhotoCardAdapter extends RecyclerView.Adapter<PhotoCardAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        final boolean lastPosition = position == 9;
+        final boolean lastPosition = position == 0;
         final Context context = holder.cardView.getContext();
 
         holder.photoMiniature.setBackgroundResource(lastPosition ? R.drawable.ic_add_primary : R.drawable.ic_add_photo_primary);
@@ -58,7 +58,7 @@ public class PhotoCardAdapter extends RecyclerView.Adapter<PhotoCardAdapter.View
 
     @Override
     public int getItemCount() {
-        return 10;
+        return 1;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
