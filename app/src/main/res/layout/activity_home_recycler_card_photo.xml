@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:focusable="true"
-        android:foreground="?android:attr/selectableItemBackground"
+        android:foreground="@drawable/card_view_ripple_primary_transparent"
         card_view:cardCornerRadius="2dp"
         card_view:cardElevation="4dp"
         card_view:cardUseCompatPadding="true"
@@ -27,8 +27,8 @@
                 android:id="@+id/photoMiniature"
                 android:layout_width="100dp"
                 android:layout_height="0dp"
-                android:src="@drawable/ic_add_photo_primary"
                 android:contentDescription="@string/home_component_card_photo_miniature_description"
+                android:src="@drawable/ic_add_photo_primary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
