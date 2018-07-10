@@ -6,11 +6,13 @@ public class PhotoMapper {
     public static Photo map(oob.instagramapitest.Util.Database.Photo photoDB) {
         Photo photo = new Photo();
 
-        photo.setName(photoDB.getName())
+        photo.setId(photoDB.getId())
+                .setName(photoDB.getName())
                 .setCaption(photoDB.getCaption())
                 .setDate(photoDB.getDate())
                 .setBuffer(photoDB.getBuffer())
-                .setState(photoDB.getState());
+                .setState(photoDB.getState())
+                .setLog(photoDB.getLog());
 
         return photo;
     }

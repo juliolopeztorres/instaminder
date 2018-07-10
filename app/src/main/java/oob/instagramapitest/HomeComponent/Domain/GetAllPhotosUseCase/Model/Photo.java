@@ -3,13 +3,23 @@ package oob.instagramapitest.HomeComponent.Domain.GetAllPhotosUseCase.Model;
 import java.util.Date;
 
 public class Photo {
+    private String id;
     private String name;
     private String caption;
     private Date date;
     private byte[] buffer;
-
+    private String log;
     @oob.instagramapitest.Util.Database.Photo.State
     private String state;
+
+    public String getId() {
+        return id;
+    }
+
+    public Photo setId(String id) {
+        this.id = id;
+        return this;
+    }
 
     public String getName() {
         return name;
@@ -53,6 +63,15 @@ public class Photo {
 
     public Photo setState(String state) {
         this.state = state;
+        return this;
+    }
+
+    public String getLog() {
+        return log;
+    }
+
+    public Photo setLog(String log) {
+        this.log = log;
         return this;
     }
 }

@@ -14,18 +14,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.Date;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import oob.instagramapitest.AddPhotoScheduleComponent.Framework.AddPhotoScheduleActivity;
 import oob.instagramapitest.ApplicationComponent.BaseApplication;
 import oob.instagramapitest.HomeComponent.Domain.CheckNickPasswordStoredUseCase.CheckNickPasswordStoredUseCase;
 import oob.instagramapitest.HomeComponent.Domain.GetAllPhotosUseCase.GetAllPhotosUseCase;
+import oob.instagramapitest.HomeComponent.Domain.GetAllPhotosUseCase.Model.Photo;
 import oob.instagramapitest.HomeComponent.Domain.GetInstagramUserInformationUseCase.GetInstagramUserInformationUseCase;
 import oob.instagramapitest.HomeComponent.Domain.GetInstagramUserInformationUseCase.Model.InstagramUserInformation;
 import oob.instagramapitest.HomeComponent.Domain.LoginWithNewInformationUseCase.LoginWithNewInformationUseCase;
+import oob.instagramapitest.HomeComponent.Domain.RemovePhotoUseCase.RemovePhotoUseCase;
+import oob.instagramapitest.HomeComponent.Domain.UpdatePhotoDateUseCase.UpdatePhotoDateUseCase;
 import oob.instagramapitest.HomeComponent.Domain.ViewInterface;
 import oob.instagramapitest.HomeComponent.Framework.Adapter.PhotoCardAdapter;
+import oob.instagramapitest.HomeComponent.Framework.Adapter.PhotoCardDialogAdapter;
 import oob.instagramapitest.HomeComponent.Framework.DependencyInjection.DaggerHomeComponentInterface;
 import oob.instagramapitest.HomeComponent.Framework.DependencyInjection.HomeComponentInterface;
 import oob.instagramapitest.HomeComponent.Framework.DependencyInjection.HomeComponentModule;
@@ -33,7 +40,7 @@ import oob.instagramapitest.OptionsComponent.Framework.OptionsActivity;
 import oob.instagramapitest.Util.DialogUtil;
 import oob.instagramapitest.R;
 
-public class HomeActivity extends AppCompatActivity implements ViewInterface {
+public class HomeActivity extends AppCompatActivity implements ViewInterface, PhotoCardAdapter.OnPhotoCardEvent, PhotoCardDialogAdapter.PhotoCardDialogEvent {
     private static final String TAG = "HomeActivity";
 
     @BindView(R.id.photoCardRecyclerView)
@@ -47,6 +54,10 @@ public class HomeActivity extends AppCompatActivity implements ViewInterface {
     LoginWithNewInformationUseCase loginWithNewInformationUseCase;
     @Inject
     GetAllPhotosUseCase getAllPhotosUseCase;
+    @Inject
+    UpdatePhotoDateUseCase updatePhotoDateUseCase;
+    @Inject
+    RemovePhotoUseCase removePhotoUseCase;
 
     private View followersIndicator;
     private PhotoCardAdapter photoCardAdapter;
@@ -102,7 +113,7 @@ public class HomeActivity extends AppCompatActivity implements ViewInterface {
     private void setUpPhotoCardList() {
         this.photoCardRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        this.photoCardAdapter = new PhotoCardAdapter();
+        this.photoCardAdapter = new PhotoCardAdapter(this, this);
         this.photoCardRecyclerView.setAdapter(this.photoCardAdapter);
     }
 
@@ -197,5 +208,29 @@ public class HomeActivity extends AppCompatActivity implements ViewInterface {
         super.onResume();
 
         this.photoCardAdapter.setPhotos(this.getAllPhotosUseCase.getAll());
+    }
+
+    @Override
+    public void onPhotoClicked(Photo photo) {
+        new PhotoCardDialogAdapter(this, photo, this).show();
+    }
+
+    @Override
+    public void onAddNewPhotoClicked() {
+        this.startActivity(new Intent(this, AddPhotoScheduleActivity.class));
+    }
+
+    @Override
+    public void OnSaveClicked(Photo photo, Date date) {
+        this.updatePhotoDateUseCase.update(photo.getId(), date);
+        photo.setDate(date);
+        photo.setState(oob.instagramapitest.Util.Database.Photo.PENDING);
+        this.photoCardAdapter.notifyItemChanged(photo);
+    }
+
+    @Override
+    public void OnRemoveClicked(Photo photo) {
+        this.removePhotoUseCase.remove(photo.getId());
+        this.photoCardAdapter.notifyItemRemoved(photo);
     }
 }

@@ -1,12 +1,11 @@
 <resources>
-    <string name="app_name">Name</string>
+    <string name="app_name">Instaminder</string>
     <string name="add_photo_component_photo_description">Image to upload</string>
     <string name="add_photo_component_name_input_label">Name</string>
     <string name="add_photo_component_caption_input_label">Caption</string>
-    <string name="add_photo_component_date_input_label">Date</string>
-    <string name="add_photo_component_time_label">Time</string>
     <string name="add_photo_component_title">Add new Photo</string>
     <string name="add_photo_component_dialog_save_photo_error_message">Could not save the photo. Either photo is too big or missing inputs.</string>
+    <string name="add_photo_component_tap_to_search_photo_label">Tap to search a photo</string>
     <string name="options_component_image_header_description">App name logo</string>
     <string name="options_component_user_input_label">Username / Nick</string>
     <string name="options_component_password_input_label">Password</string>
@@ -21,9 +20,15 @@
     <string name="home_component_card_photo_caption_label">Caption:</string>
     <string name="home_component_card_photo_date_label">Date:</string>
     <string name="home_component_card_photo_state_icon_description">Photo\'s state icon</string>
+    <string name="home_component_card_photo_date_time_format">%s %s</string>
     <string name="home_component_dialog_user_info_error_message">You need to provide a valid Instagram Nick/Username and password in order to upload photos</string>
     <string name="home_component_dialog_user_info_action_label">Go to options</string>
+    <string name="home_component_dialog_photo_show_log_label">Show log</string>
+    <string name="home_component_dialog_photo_hide_log_label">Hide log</string>
+    <string name="home_component_dialog_photo_save_label">Save</string>
+    <string name="home_component_dialog_photo_remove_label">Remove</string>
     <string name="dialog_user_info_error_title">Error</string>
     <string name="dialog_user_info_warning_title">Warning</string>
-    <string name="add_photo_component_tap_to_search_photo_label">Tap to search a photo</string>
+    <string name="inc_date_time_inputs_date_label">Date</string>
+    <string name="inc_date_time_inputs_time_label">Time</string>
 </resources>

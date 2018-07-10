@@ -2,8 +2,6 @@ package oob.instagramapitest.Util;
 
 import android.content.SharedPreferences;
 
-import oob.instagramapitest.ApplicationComponent.ApplicationConstant;
-
 public class PreferencesWrapper {
     private String PREFERENCES_NICK_KEY = "preferences_nick_key";
     private String PREFERENCES_PASSWORD_KEY = "preferences_password_key";

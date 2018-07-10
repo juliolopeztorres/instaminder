@@ -1,5 +1,7 @@
 package oob.instagramapitest.AddPhotoScheduleComponent.Framework.DependencyInjection;
 
+import android.content.Context;
+
 import dagger.Module;
 import dagger.Provides;
 import io.realm.Realm;
@@ -24,7 +26,7 @@ public class AddPhotoScheduleComponentModule {
 
     @AddPhotoScheduleComponentScopeInterface
     @Provides
-    SavePhotoUseCaseRepositoryInterface provideSavePhotoUseCaseRepositoryInterface(Realm realm) {
-        return new SavePhotoUseCaseRepository(realm);
+    SavePhotoUseCaseRepositoryInterface provideSavePhotoUseCaseRepositoryInterface(Context context, Realm realm) {
+        return new SavePhotoUseCaseRepository(context, realm);
     }
 }

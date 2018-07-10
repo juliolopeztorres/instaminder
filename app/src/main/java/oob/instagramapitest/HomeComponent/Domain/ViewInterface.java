@@ -4,10 +4,14 @@ import oob.instagramapitest.HomeComponent.Domain.CheckNickPasswordStoredUseCase.
 import oob.instagramapitest.HomeComponent.Domain.GetAllPhotosUseCase.GetAllPhotosUseCaseViewInterface;
 import oob.instagramapitest.HomeComponent.Domain.GetInstagramUserInformationUseCase.GetInstagramUserInformationUseCaseViewInterface;
 import oob.instagramapitest.HomeComponent.Domain.LoginWithNewInformationUseCase.LoginWithNewInformationUseCaseViewInterface;
+import oob.instagramapitest.HomeComponent.Domain.RemovePhotoUseCase.RemovePhotoUseCaseViewInterface;
+import oob.instagramapitest.HomeComponent.Domain.UpdatePhotoDateUseCase.UpdatePhotoDateUseCaseViewInterface;
 
 public interface ViewInterface extends
         CheckNickPasswordStoredUseCaseViewInterface,
         GetInstagramUserInformationUseCaseViewInterface,
         LoginWithNewInformationUseCaseViewInterface,
-        GetAllPhotosUseCaseViewInterface {
+        GetAllPhotosUseCaseViewInterface,
+        UpdatePhotoDateUseCaseViewInterface,
+        RemovePhotoUseCaseViewInterface {
 }

@@ -84,6 +84,12 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
     private void init() {
         this.setBackButton();
         this.tintActionBarTextColor();
+        this.initPhotoDateTime();
+    }
+
+    private void initPhotoDateTime() {
+        this.photoDate.setText(SimpleDateFormat.getDateInstance().format(AddPhotoScheduleActivity.this.calendar.getTime()));
+        this.photoTime.setText(SimpleDateFormat.getTimeInstance().format(AddPhotoScheduleActivity.this.calendar.getTime()));
     }
 
     private void setBackButton() {
@@ -218,27 +224,3 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
         this.finish();
     }
 }
-
-/*@Override
-    public void onClick(View v) {
-        Intent alarmIntent = new Intent(this, AlarmReceiver.class);
-
-        Photo photo = this.realm.where(Photo.class).findFirst();
-
-        alarmIntent.putExtra("photoId", photo.getId());
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
-
-        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        if (manager == null) {
-            Toast.makeText(this, "Could not scheduled the upload as there is no Alarm manager on Device", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        manager.setAlarmClock(new AlarmManager.AlarmClockInfo(
-                photo.getDate().getTime()
-                // Calendar.getInstance().getTimeInMillis() + 5 * 60 * 1000
-                , null), pendingIntent);
-
-        Toast.makeText(this, "Photo Scheduled correctly. Wait for it", Toast.LENGTH_LONG).show();
-    }*/
