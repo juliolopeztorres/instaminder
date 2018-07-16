@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,7 +21,12 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.yalantis.ucrop.UCrop;
+import com.yalantis.ucrop.model.AspectRatio;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -45,6 +51,7 @@ import oob.instagramapitest.Util.ViewUtil;
 
 public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewInterface {
     private static final int REQUEST_CODE_SEARCH_PHOTO = 1;
+    private static final String PHOTO_PLACEHOLDER_NAME = "photoEditingSpaceReserve";
 
     @BindView(R.id.photoName)
     EditText photoName;
@@ -185,17 +192,42 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_SEARCH_PHOTO) {
             if (resultCode == Activity.RESULT_OK && data.getData() != null) {
-                this.onPhotoLoaded(data.getData());
+                this.onPhotoLoadedFromDisk(data.getData());
             }
+            return;
+        }
+
+        if (requestCode == UCrop.REQUEST_CROP) {
+            if (resultCode == RESULT_OK) {
+                this.onPhotoEdited(UCrop.getOutput(data));
+            }
+
             return;
         }
 
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void onPhotoLoaded(Uri photoUri) {
+    private void onPhotoLoadedFromDisk(Uri photoUri) {
+        this.goToEditPhotoComponent(photoUri);
+    }
+
+    private void goToEditPhotoComponent(Uri photoUri) {
+        UCrop.of(
+                photoUri,
+                Uri.fromFile(this.getTempFile())
+        ).withOptions(
+                this.getUCropOptions()
+        ).start(this);
+    }
+
+    private void onPhotoEdited(Uri photoUri) {
         ViewUtil.makeViewGone(this.photoTapToSearchLabel);
-        Glide.with(this).load(photoUri).into(this.photoImagePreview);
+
+        Glide.with(this).load(photoUri)
+                .apply(RequestOptions.skipMemoryCacheOf(true))
+                .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
+                .into(this.photoImagePreview);
 
         try {
             this.photoBuffer = ByteUtil.convertInputStreamToByteArray(this.getContentResolver().openInputStream(photoUri));
@@ -222,5 +254,32 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
 
         this.setResult(Activity.RESULT_OK);
         this.finish();
+    }
+
+    private File getTempFile() {
+        File file = new File(this.getCacheDir() + "/" + PHOTO_PLACEHOLDER_NAME);
+        file.deleteOnExit();
+
+        return file;
+    }
+
+    private UCrop.Options getUCropOptions() {
+        UCrop.Options options = new UCrop.Options();
+
+        options.setAspectRatioOptions(1,
+                new AspectRatio(this.getString(R.string.edit_photo_component_vertical_aspect_ratio_title), 4, 5), // VERTICAL
+                new AspectRatio(this.getString(R.string.edit_photo_component_square_aspect_ratio_title), 1, 1), // SQUARE
+                new AspectRatio(this.getString(R.string.edit_photo_component_horizontal_aspect_ratio_title), 16, 9) // LANDSCAPE
+        );
+
+        options.setToolbarColor(ContextCompat.getColor(this, R.color.colorAccentWhite));
+        options.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        options.setActiveWidgetColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        options.setToolbarWidgetColor(ContextCompat.getColor(this, R.color.colorPrimary));
+
+
+        options.setToolbarTitle(this.getResources().getString(R.string.edit_photo_component_title));
+
+        return options;
     }
 }
