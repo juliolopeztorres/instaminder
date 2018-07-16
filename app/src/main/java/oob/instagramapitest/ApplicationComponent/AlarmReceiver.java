@@ -124,6 +124,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             }
 
             updatePhotoState(this.photoId);
+            log("doInBackground: Process finished");
             return null;
         }
 
