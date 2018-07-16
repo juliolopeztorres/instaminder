@@ -31,4 +31,5 @@
     <string name="dialog_user_info_warning_title">Warning</string>
     <string name="inc_date_time_inputs_date_label">Date</string>
     <string name="inc_date_time_inputs_time_label">Time</string>
+    <string name="edit_photo_component_title">Edit photo</string>
 </resources>
