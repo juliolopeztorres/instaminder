@@ -177,7 +177,7 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
         Intent chooserIntent = Intent
                 .createChooser(
                         new Intent(Intent.ACTION_GET_CONTENT).setType("image/*"),
-                        "Search for a Photo")
+                        this.getString(R.string.add_photo_component_multiple_intent_title))
                 .putExtra(
                         Intent.EXTRA_INITIAL_INTENTS,
                         new Intent[]{

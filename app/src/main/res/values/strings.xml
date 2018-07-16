@@ -35,4 +35,5 @@
     <string name="edit_photo_component_vertical_aspect_ratio_title">Vertical</string>
     <string name="edit_photo_component_square_aspect_ratio_title">Square</string>
     <string name="edit_photo_component_horizontal_aspect_ratio_title">Landscape</string>
+    <string name="add_photo_component_multiple_intent_title">Search a Photo</string>
 </resources>
