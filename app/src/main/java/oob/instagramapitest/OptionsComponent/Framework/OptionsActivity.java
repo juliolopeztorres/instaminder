@@ -27,8 +27,6 @@ import oob.instagramapitest.OptionsComponent.Framework.DependencyInjection.Optio
 import oob.instagramapitest.R;
 
 public class OptionsActivity extends AppCompatActivity implements ViewInterface {
-    private static final String TAG = "OptionsActivity";
-
     public static final int REQUEST_CODE_SAVE_USER_INFORMATION = 0;
 
     @BindView(R.id.nickInputWrapper)

@@ -32,6 +32,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         this.context = context;
         this.preferencesWrapper = ((BaseApplication) this.context.getApplicationContext()).getComponent().getPreferencesWrapper();
+        // In order to init Realm, just in case
         ((BaseApplication) this.context.getApplicationContext()).getComponent().getRealm();
 
         String photoId = intent.getExtras() != null ? intent.getExtras().getString("photoId") : null;

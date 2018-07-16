@@ -41,8 +41,6 @@ import oob.instagramapitest.Util.DialogUtil;
 import oob.instagramapitest.R;
 
 public class HomeActivity extends AppCompatActivity implements ViewInterface, PhotoCardAdapter.OnPhotoCardEvent, PhotoCardDialogAdapter.PhotoCardDialogEvent {
-    private static final String TAG = "HomeActivity";
-
     @BindView(R.id.photoCardRecyclerView)
     RecyclerView photoCardRecyclerView;
 
