@@ -1,7 +1,0 @@
-package oob.instagramapitest.OptionsComponent.Domain;
-
-import oob.instagramapitest.OptionsComponent.Domain.GetUserInformationUseCase.GetUserInformationUseCaseViewInterface;
-import oob.instagramapitest.OptionsComponent.Domain.SaveUserInformationUseCase.SaveUserInformationUseCaseViewInterface;
-
-public interface ViewInterface extends SaveUserInformationUseCaseViewInterface, GetUserInformationUseCaseViewInterface {
-}

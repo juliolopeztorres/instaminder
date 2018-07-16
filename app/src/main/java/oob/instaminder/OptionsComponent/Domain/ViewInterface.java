@@ -1,0 +1,7 @@
+package oob.instaminder.OptionsComponent.Domain;
+
+import oob.instaminder.OptionsComponent.Domain.GetUserInformationUseCase.GetUserInformationUseCaseViewInterface;
+import oob.instaminder.OptionsComponent.Domain.SaveUserInformationUseCase.SaveUserInformationUseCaseViewInterface;
+
+public interface ViewInterface extends SaveUserInformationUseCaseViewInterface, GetUserInformationUseCaseViewInterface {
+}

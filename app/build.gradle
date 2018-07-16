@@ -4,7 +4,7 @@ apply plugin: 'realm-android'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId 'oob.instagramapitest'
+        applicationId 'oob.instaminder'
         minSdkVersion 21
         targetSdkVersion 27
         versionCode 100

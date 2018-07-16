@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingTop="40dp"
-    tools:context="oob.instagramapitest.OptionsComponent.Framework.OptionsActivity">
+    tools:context="oob.instaminder.OptionsComponent.Framework.OptionsActivity">
 
     <View
         android:layout_width="0dp"

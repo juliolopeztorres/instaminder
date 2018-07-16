@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="oob.instagramapitest">
+    package="oob.instaminder">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".ApplicationComponent.BaseApplication"
+        android:name="oob.instaminder.ApplicationComponent.BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning,InnerclassSeparator">
         <activity
-            android:name=".HomeComponent.Framework.HomeActivity"
+            android:name="oob.instaminder.HomeComponent.Framework.HomeActivity"
             android:screenOrientation="portrait"
             tools:ignore="InnerclassSeparator">
             <intent-filter>
@@ -27,13 +27,13 @@
         </activity>
 
         <activity
-            android:name=".OptionsComponent.Framework.OptionsActivity"
+            android:name="oob.instaminder.OptionsComponent.Framework.OptionsActivity"
             android:screenOrientation="portrait">
 
         </activity>
 
         <activity
-            android:name=".AddPhotoScheduleComponent.Framework.AddPhotoScheduleActivity"
+            android:name="oob.instaminder.AddPhotoScheduleComponent.Framework.AddPhotoScheduleActivity"
             android:screenOrientation="portrait">
 
         </activity>
@@ -44,7 +44,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <receiver
-            android:name=".ApplicationComponent.AlarmReceiver"
+            android:name="oob.instaminder.ApplicationComponent.AlarmReceiver"
             android:exported="false"
             tools:ignore="InnerclassSeparator" />
     </application>
