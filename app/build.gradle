@@ -22,7 +22,12 @@ android {
 }
 
 dependencies {
-    implementation 'com.github.charlieAndroidDev:Instagram4Android:0.2.7'
+    implementation project(':Instagram4Android')
+    implementation(
+            [group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.8.6'],
+            [group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.8.6'],
+            [group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.8.6']
+    )
     implementation 'com.github.yalantis:ucrop:2.2.2'
 
     // Dependency Injection
@@ -35,8 +40,7 @@ dependencies {
 
     // RecyclerView
     implementation 'com.android.support:recyclerview-v7:27.1.1'
-    implementation "com.android.support:design:27.1.1"
-
+    implementation 'com.android.support:design:27.1.1'
     // CardView
     implementation 'com.android.support:cardview-v7:27.1.1'
 
