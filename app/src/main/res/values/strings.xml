@@ -10,6 +10,13 @@
     <string name="add_photo_component_title">Add new Photo</string>
     <string name="add_photo_component_dialog_save_photo_error_message">Could not save the photo. Either photo is too big or missing inputs.</string>
     <string name="add_photo_component_tap_to_search_photo_label">Tap to search a photo</string>
+    <string name="add_photo_component_multiple_intent_title">Search a Photo</string>
+    <string name="add_photo_component_estimated_view_label">Estimated view:</string>
+    <string name="add_photo_component_preview_header_title">Instagram</string>
+    <string name="add_photo_component_username_placeholder">---</string>
+    <string name="add_photo_component_likes_number_label">941 likes</string>
+    <string name="add_photo_component_caption_preview_black_color">#000000</string>
+    <string name="add_photo_component_caption_preview_hashTag_color">#003569</string>
     <string name="options_component_image_header_description">App name logo</string>
     <string name="options_component_user_input_label">Username / Nick</string>
     <string name="options_component_password_input_label">Password</string>
@@ -35,5 +42,4 @@
     <string name="edit_photo_component_vertical_aspect_ratio_title">Vertical</string>
     <string name="edit_photo_component_square_aspect_ratio_title">Square</string>
     <string name="edit_photo_component_horizontal_aspect_ratio_title">Landscape</string>
-    <string name="add_photo_component_multiple_intent_title">Search a Photo</string>
 </resources>
