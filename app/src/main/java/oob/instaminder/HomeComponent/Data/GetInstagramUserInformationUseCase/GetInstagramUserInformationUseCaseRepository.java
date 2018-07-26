@@ -23,8 +23,8 @@ public class GetInstagramUserInformationUseCaseRepository implements GetInstagra
                 callback.onGetUserInformationSuccess(new InstagramUserInformation(
                         instagramUser.getUsername(),
                         String.valueOf(instagramUser.getFollowing_count()),
-                        String.valueOf(instagramUser.getFollower_count())
-                ));
+                        String.valueOf(instagramUser.getFollower_count()),
+                        instagramUser.getProfile_pic_url()));
             }
 
             @Override
