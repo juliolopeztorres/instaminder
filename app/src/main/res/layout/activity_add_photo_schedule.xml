@@ -9,37 +9,212 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/white"
         android:focusableInTouchMode="true"
         android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@string/add_photo_component_estimated_view_label" />
 
         <LinearLayout
             android:id="@+id/photoImagePreviewContainer"
             android:layout_width="match_parent"
-            android:layout_height="230dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="vertical"
-            tools:ignore="UseCompoundDrawables">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="#fcfcfc"
+                android:elevation="1dp"
+                android:paddingEnd="15dp"
+                android:paddingStart="15dp">
+
+                <ImageView
+                    android:id="@+id/ic_add_photo_primary"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:contentDescription="@string/add_photo_component_photo_description"
+                    android:src="@drawable/ic_add_photo_primary"
+                    android:tint="@android:color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    style="@style/InstagramFont"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/add_photo_component_preview_header_title"
+                    android:textColor="@android:color/black"
+                    android:textSize="24sp"
+                    app:layout_constraintEnd_toStartOf="@id/ic_instagram_send_filled"
+                    app:layout_constraintStart_toEndOf="@id/ic_add_photo_primary" />
+
+                <ImageView
+                    android:id="@+id/ic_instagram_send_filled"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:contentDescription="@string/add_photo_component_photo_description"
+                    android:src="@drawable/ic_instagram_send_filled"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:paddingEnd="15dp"
+                android:paddingStart="15dp">
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/userProfilePhoto"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:contentDescription="@string/add_photo_component_photo_description"
+                    android:src="@drawable/instagram_user_no_profile_photo"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:riv_border_width="0dp"
+                    app:riv_oval="true" />
+
+                <TextView
+                    android:id="@+id/username"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/add_photo_component_username_placeholder"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@id/ic_instagram_options"
+                    app:layout_constraintStart_toEndOf="@id/userProfilePhoto" />
+
+                <ImageView
+                    android:id="@+id/ic_instagram_options"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:contentDescription="@string/add_photo_component_photo_description"
+                    android:src="@drawable/ic_instagram_options"
+                    android:tint="@android:color/darker_gray"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical"
+                tools:ignore="UseCompoundDrawables">
+
+                <TextView
+                    android:id="@+id/photoTapToSearchLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="260dp"
+                    android:gravity="center"
+                    android:text="@string/add_photo_component_tap_to_search_photo_label"
+                    android:textSize="24sp" />
+
+                <ImageView
+                    android:id="@+id/photoImagePreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/add_photo_component_photo_description"
+                    android:scaleType="fitCenter" />
+            </LinearLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="15dp">
+
+                <ImageView
+                    android:id="@+id/ic_instagram_like"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:contentDescription="@string/add_photo_component_photo_description"
+                    android:src="@drawable/ic_instagram_like"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ic_instagram_comment"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="15dp"
+                    android:contentDescription="@string/add_photo_component_photo_description"
+                    android:src="@drawable/ic_instagram_comment"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ic_instagram_like"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ic_instagram_send"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="15dp"
+                    android:contentDescription="@string/add_photo_component_photo_description"
+                    android:src="@drawable/ic_instagram_send"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ic_instagram_comment"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="@string/add_photo_component_photo_description"
+                    android:src="@drawable/ic_instagram_bookmark"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
 
             <TextView
-                android:id="@+id/photoTapToSearchLabel"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/add_photo_component_tap_to_search_photo_label"
-                android:textSize="24sp" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="15dp"
+                android:text="@string/add_photo_component_likes_number_label"
+                android:textColor="@android:color/black"
+                tools:ignore="RtlSymmetry" />
 
-            <ImageView
-                android:id="@+id/photoImagePreview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:contentDescription="@string/add_photo_component_photo_description" />
+            <TextView
+                android:id="@+id/usernameBottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="15dp"
+                android:text="@string/add_photo_component_username_placeholder"
+                android:textColor="@android:color/black"
+                tools:ignore="RtlSymmetry" />
+
+            <TextView
+                android:id="@+id/captionPreview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="20dp"
+                android:paddingStart="15dp"
+                tools:ignore="RtlSymmetry" />
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?android:colorBackground"
             android:orientation="vertical"
             android:padding="10dp">
 

@@ -12,6 +12,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.Html;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
@@ -49,7 +52,9 @@ import oob.instaminder.Util.DialogUtil;
 import oob.instaminder.Util.LogUtil;
 import oob.instaminder.Util.ViewUtil;
 
-public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewInterface {
+public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewInterface, TextWatcher {
+    public static final String INTENT_USERNAME_KEY = "usernameKey";
+    public static final String INTENT_PROFILE_PHOTO_URL_KEY = "profilePhotoUrlKey";
     private static final int REQUEST_CODE_SEARCH_PHOTO = 1;
     private static final String PHOTO_PLACEHOLDER_NAME = "photoEditingSpaceReserve";
 
@@ -65,6 +70,14 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
     ImageView photoImagePreview;
     @BindView(R.id.photoTapToSearchLabel)
     View photoTapToSearchLabel;
+    @BindView(R.id.userProfilePhoto)
+    ImageView userProfilePhoto;
+    @BindView(R.id.username)
+    TextView username;
+    @BindView(R.id.usernameBottom)
+    TextView usernameBottom;
+    @BindView(R.id.captionPreview)
+    TextView captionPreview;
 
     @Inject
     SavePhotoUseCase savePhotoUseCase;
@@ -92,6 +105,28 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
         this.setBackButton();
         this.tintActionBarTextColor();
         this.initPhotoDateTime();
+        this.setUpPreviewToolbarInformation();
+        this.setUpPhotoCaptionListener();
+    }
+
+    private void setUpPhotoCaptionListener() {
+        this.photoCaption.addTextChangedListener(this);
+    }
+
+    private void setUpPreviewToolbarInformation() {
+        Intent intent = this.getIntent();
+
+        String username = intent.getStringExtra(INTENT_USERNAME_KEY);
+        String profilePhotoUrl = intent.getStringExtra(INTENT_PROFILE_PHOTO_URL_KEY);
+
+        if (username != null) {
+            this.username.setText(username);
+            this.usernameBottom.setText(username);
+        }
+
+        if (profilePhotoUrl != null) {
+            Glide.with(this).load(profilePhotoUrl).into(this.userProfilePhoto);
+        }
     }
 
     private void initPhotoDateTime() {
@@ -281,5 +316,41 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
         options.setToolbarTitle(this.getResources().getString(R.string.edit_photo_component_title));
 
         return options;
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    }
+
+    @Override
+    public void onTextChanged(CharSequence text, int start, int before, int count) {
+        this.captionPreview.setText(
+                Html.fromHtml(this.getFormattedCaptionForHtml(text.toString()))
+        );
+    }
+
+    private String getFormattedCaptionForHtml(String captionEntered) {
+        if (captionEntered == null || captionEntered.isEmpty()) {
+            return "";
+        }
+
+        String[] textParts = captionEntered.split(" ");
+        StringBuilder formattedText = new StringBuilder();
+        for (String textPart : textParts) {
+            formattedText.append(
+                    String.format(
+                            "<font color='%s'>%s</font>",
+                            textPart.charAt(0) == '#' ?
+                                    this.getString(R.string.add_photo_component_caption_preview_hashTag_color) :
+                                    this.getString(R.string.add_photo_component_caption_preview_black_color),
+                            textPart)
+            ).append(" ");
+        }
+
+        return formattedText.toString();
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
     }
 }
