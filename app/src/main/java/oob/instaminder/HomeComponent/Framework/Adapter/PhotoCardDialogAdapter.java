@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import oob.instaminder.HomeComponent.Domain.GetAllPhotosUseCase.Model.Photo;
 import oob.instaminder.R;
-import oob.instaminder.Util.InstagramAPI.StringUtil;
+import oob.instaminder.Util.StringUtil;
 import oob.instaminder.Util.ViewUtil;
 
 public class PhotoCardDialogAdapter {

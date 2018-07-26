@@ -1,4 +1,4 @@
-package oob.instaminder.Util.InstagramAPI;
+package oob.instaminder.Util;
 
 public class StringUtil {
     public static String limitIfGreaterThan(String stringToBeLimited, int charLimit) {

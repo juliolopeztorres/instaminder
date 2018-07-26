@@ -19,7 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import oob.instaminder.HomeComponent.Domain.GetAllPhotosUseCase.Model.Photo;
 import oob.instaminder.R;
-import oob.instaminder.Util.InstagramAPI.StringUtil;
+import oob.instaminder.Util.StringUtil;
 
 public class PhotoCardAdapter extends RecyclerView.Adapter<PhotoCardAdapter.ViewHolder> {
     private static final int CAPTION_CHARACTERS_LIMIT = 45;
