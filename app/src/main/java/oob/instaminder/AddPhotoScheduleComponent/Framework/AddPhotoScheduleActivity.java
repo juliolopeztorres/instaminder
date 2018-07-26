@@ -242,10 +242,7 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
     }
 
     private File getTempFile() {
-        File file = new File(this.getCacheDir() + "/" + PHOTO_PLACEHOLDER_NAME);
-        file.deleteOnExit();
-
-        return file;
+        return new File(this.getCacheDir() + "/" + PHOTO_PLACEHOLDER_NAME);
     }
 
     private UCrop.Options getUCropOptions() {
