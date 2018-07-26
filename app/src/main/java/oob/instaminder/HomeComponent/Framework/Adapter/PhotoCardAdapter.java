@@ -19,8 +19,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import oob.instaminder.HomeComponent.Domain.GetAllPhotosUseCase.Model.Photo;
 import oob.instaminder.R;
+import oob.instaminder.Util.InstagramAPI.StringUtil;
 
 public class PhotoCardAdapter extends RecyclerView.Adapter<PhotoCardAdapter.ViewHolder> {
+    private static final int CAPTION_CHARACTERS_LIMIT = 45;
 
     private Context context;
     private OnPhotoCardEvent callback;
@@ -58,8 +60,7 @@ public class PhotoCardAdapter extends RecyclerView.Adapter<PhotoCardAdapter.View
         holder.photoStateIndicator.setVisibility(lastPosition ? View.GONE : View.VISIBLE);
 
         if (photo != null) {
-            holder.photoName.setText(photo.getName());
-            holder.photoCaption.setText(photo.getCaption());
+            holder.photoCaption.setText(StringUtil.limitIfGreaterThan(photo.getCaption(), CAPTION_CHARACTERS_LIMIT));
             holder.photoDate.setText(
                     String.format(PhotoCardAdapter.this.context.getString(R.string.home_component_card_photo_date_time_format), SimpleDateFormat.getDateInstance().format(photo.getDate()), SimpleDateFormat.getTimeInstance().format(photo.getDate()))
             );
@@ -117,8 +118,6 @@ public class PhotoCardAdapter extends RecyclerView.Adapter<PhotoCardAdapter.View
         View photoDataContainer;
         @BindView(R.id.addNewPhotoLabel)
         View addNewPhotoLabel;
-        @BindView(R.id.photoName)
-        TextView photoName;
         @BindView(R.id.photoCaption)
         TextView photoCaption;
         @BindView(R.id.photoDate)

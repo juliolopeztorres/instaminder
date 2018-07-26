@@ -20,9 +20,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import oob.instaminder.HomeComponent.Domain.GetAllPhotosUseCase.Model.Photo;
 import oob.instaminder.R;
+import oob.instaminder.Util.InstagramAPI.StringUtil;
 import oob.instaminder.Util.ViewUtil;
 
 public class PhotoCardDialogAdapter {
+    private static final int TITLE_CHARACTERS_LIMIT = 45;
+
     @BindView(R.id.photoTitle)
     TextView photoTitle;
     @BindView(R.id.photoDate)
@@ -71,7 +74,7 @@ public class PhotoCardDialogAdapter {
     }
 
     private void setUpViewData() {
-        this.photoTitle.setText(String.format("%s (%s)", this.photo.getName(), this.photo.getCaption()));
+        this.photoTitle.setText(String.format("%s", StringUtil.limitIfGreaterThan(this.photo.getCaption(), TITLE_CHARACTERS_LIMIT)));
         this.photoDate.setText(SimpleDateFormat.getDateInstance().format(photo.getDate()));
         this.photoTime.setText(SimpleDateFormat.getTimeInstance().format(photo.getDate()));
         this.photoLog.setText(this.photo.getLog());
