@@ -28,7 +28,6 @@
                 android:layout_width="100dp"
                 android:layout_height="0dp"
                 android:contentDescription="@string/home_component_card_photo_miniature_description"
-                android:src="@drawable/ic_add_photo_primary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
