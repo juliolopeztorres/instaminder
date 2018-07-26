@@ -227,7 +227,7 @@ public class HomeActivity extends AppCompatActivity implements ViewInterface, Ph
     }
 
     @Override
-    public void OnSaveClicked(Photo photo, Date date) {
+    public void onSaveClicked(Photo photo, Date date) {
         this.updatePhotoDateUseCase.update(photo.getId(), date);
         photo.setDate(date);
         photo.setState(oob.instaminder.Util.Database.Photo.PENDING);
@@ -235,7 +235,7 @@ public class HomeActivity extends AppCompatActivity implements ViewInterface, Ph
     }
 
     @Override
-    public void OnRemoveClicked(Photo photo) {
+    public void onRemoveClicked(Photo photo) {
         this.removePhotoUseCase.remove(photo.getId());
         this.photoCardAdapter.notifyItemRemoved(photo);
     }

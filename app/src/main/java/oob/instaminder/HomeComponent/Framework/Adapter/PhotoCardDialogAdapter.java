@@ -52,9 +52,9 @@ public class PhotoCardDialogAdapter {
     }
 
     public interface PhotoCardDialogEvent {
-        void OnSaveClicked(Photo photo, Date date);
+        void onSaveClicked(Photo photo, Date date);
 
-        void OnRemoveClicked(Photo photo);
+        void onRemoveClicked(Photo photo);
     }
 
     private void inflateDialog() {
@@ -100,12 +100,12 @@ public class PhotoCardDialogAdapter {
     @OnClick(R.id.saveContainer)
     void onSaveContainerClicked() {
         this.dialog.dismiss();
-        this.callback.OnSaveClicked(this.photo, this.dateTimePickerHelper.get());
+        this.callback.onSaveClicked(this.photo, this.dateTimePickerHelper.get());
     }
 
     @OnClick(R.id.removeContainer)
     void onRemoveContainerClicked() {
         this.dialog.dismiss();
-        this.callback.OnRemoveClicked(this.photo);
+        this.callback.onRemoveClicked(this.photo);
     }
 }
