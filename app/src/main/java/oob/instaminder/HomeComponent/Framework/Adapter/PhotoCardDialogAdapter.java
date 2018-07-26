@@ -1,18 +1,13 @@
 package oob.instaminder.HomeComponent.Framework.Adapter;
 
 import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import butterknife.BindView;
@@ -20,6 +15,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import oob.instaminder.HomeComponent.Domain.GetAllPhotosUseCase.Model.Photo;
 import oob.instaminder.R;
+import oob.instaminder.Util.DateTimePickerHelper;
 import oob.instaminder.Util.StringUtil;
 import oob.instaminder.Util.ViewUtil;
 
@@ -44,8 +40,7 @@ public class PhotoCardDialogAdapter {
     private Context context;
     private Photo photo;
     private PhotoCardDialogEvent callback;
-    private Calendar calendar = Calendar.getInstance();
-
+    private DateTimePickerHelper dateTimePickerHelper;
 
     public PhotoCardDialogAdapter(Context context, Photo photo, PhotoCardDialogEvent callback) {
         this.context = context;
@@ -75,58 +70,19 @@ public class PhotoCardDialogAdapter {
 
     private void setUpViewData() {
         this.photoTitle.setText(String.format("%s", StringUtil.limitIfGreaterThan(this.photo.getCaption(), TITLE_CHARACTERS_LIMIT)));
-        this.photoDate.setText(SimpleDateFormat.getDateInstance().format(photo.getDate()));
-        this.photoTime.setText(SimpleDateFormat.getTimeInstance().format(photo.getDate()));
         this.photoLog.setText(this.photo.getLog());
 
-        if (photo.getState().equals(oob.instaminder.Util.Database.Photo.ERROR) && !this.photo.getLog().isEmpty()) {
+        if (this.photo.getState().equals(oob.instaminder.Util.Database.Photo.ERROR) && !this.photo.getLog().isEmpty()) {
             ViewUtil.makeViewVisible(this.showLogContainer);
         }
+
+        this.dateTimePickerHelper = new DateTimePickerHelper(this.context, this.photoDate, this.photoTime);
+        this.photoDate.setText(SimpleDateFormat.getDateInstance().format(this.photo.getDate()));
+        this.photoTime.setText(SimpleDateFormat.getTimeInstance().format(this.photo.getDate()));
     }
 
     public void show() {
         this.dialog.show();
-    }
-
-    @OnClick(R.id.photoDate)
-    void onPhotoDateClicked(final TextView textView) {
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                this.context,
-                0,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        PhotoCardDialogAdapter.this.calendar.set(year, month, dayOfMonth);
-                        textView.setText(SimpleDateFormat.getDateInstance().format(PhotoCardDialogAdapter.this.calendar.getTime()));
-                    }
-                },
-                PhotoCardDialogAdapter.this.calendar.get(Calendar.YEAR),
-                PhotoCardDialogAdapter.this.calendar.get(Calendar.MONTH),
-                PhotoCardDialogAdapter.this.calendar.get(Calendar.DAY_OF_MONTH)
-        );
-
-        datePickerDialog.show();
-    }
-
-    @OnClick(R.id.photoTime)
-    void onPhotoTimeClicked(final TextView textView) {
-        TimePickerDialog datePickerDialog = new TimePickerDialog(
-                this.context,
-                0,
-                new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        PhotoCardDialogAdapter.this.calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                        PhotoCardDialogAdapter.this.calendar.set(Calendar.MINUTE, minute);
-                        textView.setText(SimpleDateFormat.getTimeInstance().format(PhotoCardDialogAdapter.this.calendar.getTime()));
-                    }
-                },
-                PhotoCardDialogAdapter.this.calendar.get(Calendar.HOUR_OF_DAY),
-                PhotoCardDialogAdapter.this.calendar.get(Calendar.MINUTE),
-                true
-        );
-
-        datePickerDialog.show();
     }
 
     @OnClick(R.id.showLogContainer)
@@ -144,7 +100,7 @@ public class PhotoCardDialogAdapter {
     @OnClick(R.id.saveContainer)
     void onSaveContainerClicked() {
         this.dialog.dismiss();
-        this.callback.OnSaveClicked(this.photo, this.calendar.getTime());
+        this.callback.OnSaveClicked(this.photo, this.dateTimePickerHelper.get());
     }
 
     @OnClick(R.id.removeContainer)

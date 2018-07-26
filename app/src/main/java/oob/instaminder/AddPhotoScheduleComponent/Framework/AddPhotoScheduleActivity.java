@@ -1,8 +1,6 @@
 package oob.instaminder.AddPhotoScheduleComponent.Framework;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -17,11 +15,9 @@ import android.text.Html;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -31,8 +27,6 @@ import com.yalantis.ucrop.model.AspectRatio;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 import javax.inject.Inject;
 
@@ -48,6 +42,7 @@ import oob.instaminder.AddPhotoScheduleComponent.Framework.DependencyInjection.D
 import oob.instaminder.ApplicationComponent.BaseApplication;
 import oob.instaminder.R;
 import oob.instaminder.Util.ByteUtil;
+import oob.instaminder.Util.DateTimePickerHelper;
 import oob.instaminder.Util.DialogUtil;
 import oob.instaminder.Util.LogUtil;
 import oob.instaminder.Util.ViewUtil;
@@ -81,7 +76,7 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
     SavePhotoUseCase savePhotoUseCase;
 
     private byte[] photoBuffer;
-    private Calendar calendar = Calendar.getInstance();
+    private DateTimePickerHelper dateTimePickerHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,9 +97,13 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
     private void init() {
         this.setBackButton();
         this.tintActionBarTextColor();
-        this.initPhotoDateTime();
         this.setUpPreviewToolbarInformation();
         this.setUpPhotoCaptionListener();
+        this.setUpDateTimeListener();
+    }
+
+    private void setUpDateTimeListener() {
+        this.dateTimePickerHelper = new DateTimePickerHelper(this, this.photoDate, this.photoTime);
     }
 
     private void setUpPhotoCaptionListener() {
@@ -125,11 +124,6 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
         if (profilePhotoUrl != null) {
             Glide.with(this).load(profilePhotoUrl).into(this.userProfilePhoto);
         }
-    }
-
-    private void initPhotoDateTime() {
-        this.photoDate.setText(SimpleDateFormat.getDateInstance().format(AddPhotoScheduleActivity.this.calendar.getTime()));
-        this.photoTime.setText(SimpleDateFormat.getTimeInstance().format(AddPhotoScheduleActivity.this.calendar.getTime()));
     }
 
     private void setBackButton() {
@@ -162,47 +156,6 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
     public boolean onOptionsItemSelected(MenuItem item) {
         this.finish();
         return true;
-    }
-
-    @OnClick(R.id.photoDate)
-    public void onPhotoDateClicked(final TextView textView) {
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                this,
-                0,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        AddPhotoScheduleActivity.this.calendar.set(year, month, dayOfMonth);
-                        textView.setText(SimpleDateFormat.getDateInstance().format(AddPhotoScheduleActivity.this.calendar.getTime()));
-                    }
-                },
-                AddPhotoScheduleActivity.this.calendar.get(Calendar.YEAR),
-                AddPhotoScheduleActivity.this.calendar.get(Calendar.MONTH),
-                AddPhotoScheduleActivity.this.calendar.get(Calendar.DAY_OF_MONTH)
-        );
-
-        datePickerDialog.show();
-    }
-
-    @OnClick(R.id.photoTime)
-    public void onPhotoTimeClicked(final TextView textView) {
-        TimePickerDialog datePickerDialog = new TimePickerDialog(
-                this,
-                0,
-                new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        AddPhotoScheduleActivity.this.calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                        AddPhotoScheduleActivity.this.calendar.set(Calendar.MINUTE, minute);
-                        textView.setText(SimpleDateFormat.getTimeInstance().format(AddPhotoScheduleActivity.this.calendar.getTime()));
-                    }
-                },
-                AddPhotoScheduleActivity.this.calendar.get(Calendar.HOUR_OF_DAY),
-                AddPhotoScheduleActivity.this.calendar.get(Calendar.MINUTE),
-                true
-        );
-
-        datePickerDialog.show();
     }
 
     @OnClick(R.id.photoImagePreviewContainer)
@@ -275,7 +228,7 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
 
         photo.setCaption(this.photoCaption.getText().toString())
                 .setBuffer(this.photoBuffer)
-                .setDate(this.calendar.getTime());
+                .setDate(this.dateTimePickerHelper.get());
 
         if (!Photo.validate(photo)) {
             DialogUtil.showAlertDialog(this, this.getString(R.string.dialog_user_info_error_title), this.getString(R.string.add_photo_component_dialog_save_photo_error_message), this.getString(android.R.string.ok));
