@@ -21,7 +21,6 @@ public class Photo extends RealmObject {
 
     @PrimaryKey
     private String id;
-    private String name;
     private String caption;
     private Date date;
     private byte[] buffer;
@@ -36,15 +35,6 @@ public class Photo extends RealmObject {
 
     public Photo setId(String id) {
         this.id = id;
-        return this;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Photo setName(String name) {
-        this.name = name;
         return this;
     }
 

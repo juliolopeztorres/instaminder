@@ -58,8 +58,6 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
     private static final int REQUEST_CODE_SEARCH_PHOTO = 1;
     private static final String PHOTO_PLACEHOLDER_NAME = "photoEditingSpaceReserve";
 
-    @BindView(R.id.photoName)
-    EditText photoName;
     @BindView(R.id.photoCaption)
     EditText photoCaption;
     @BindView(R.id.photoDate)
@@ -275,8 +273,7 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
     public void onBtnSavePhotoClicked() {
         Photo photo = new Photo();
 
-        photo.setName(this.photoName.getText().toString())
-                .setCaption(this.photoCaption.getText().toString())
+        photo.setCaption(this.photoCaption.getText().toString())
                 .setBuffer(this.photoBuffer)
                 .setDate(this.calendar.getTime());
 

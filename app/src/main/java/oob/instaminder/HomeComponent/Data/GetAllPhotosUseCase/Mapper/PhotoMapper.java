@@ -7,7 +7,6 @@ public class PhotoMapper {
         Photo photo = new Photo();
 
         photo.setId(photoDB.getId())
-                .setName(photoDB.getName())
                 .setCaption(photoDB.getCaption())
                 .setDate(photoDB.getDate())
                 .setBuffer(photoDB.getBuffer())
