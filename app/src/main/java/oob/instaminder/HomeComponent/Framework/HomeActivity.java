@@ -59,6 +59,7 @@ public class HomeActivity extends AppCompatActivity implements ViewInterface, Ph
 
     private View followersIndicator;
     private PhotoCardAdapter photoCardAdapter;
+    private InstagramUserInformation instagramUserInformation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,6 +168,7 @@ public class HomeActivity extends AppCompatActivity implements ViewInterface, Ph
 
     @Override
     public void onGetUserInformationSuccess(final InstagramUserInformation instagramUserInformation) {
+        this.instagramUserInformation = instagramUserInformation;
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -215,7 +217,13 @@ public class HomeActivity extends AppCompatActivity implements ViewInterface, Ph
 
     @Override
     public void onAddNewPhotoClicked() {
-        this.startActivity(new Intent(this, AddPhotoScheduleActivity.class));
+        Intent intent = new Intent(this, AddPhotoScheduleActivity.class);
+        if (this.instagramUserInformation != null) {
+            intent.putExtra(AddPhotoScheduleActivity.INTENT_USERNAME_KEY, this.instagramUserInformation.getNick());
+            intent.putExtra(AddPhotoScheduleActivity.INTENT_PROFILE_PHOTO_URL_KEY, this.instagramUserInformation.getProfilePicUrl());
+        }
+
+        this.startActivity(intent);
     }
 
     @Override
