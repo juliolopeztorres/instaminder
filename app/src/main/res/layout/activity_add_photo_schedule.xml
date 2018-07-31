@@ -266,7 +266,6 @@
                         android:layout_height="20dp"
                         android:layout_marginStart="5dp"
                         android:background="@drawable/ic_add_primary"
-                        android:backgroundTint="@color/colorAccentWhite"
                         android:contentDescription="@string/options_component_btn_save_icon_description"
                         app:layout_constraintBottom_toBottomOf="@+id/savePhotoLabel"
                         app:layout_constraintStart_toEndOf="@+id/savePhotoLabel"
