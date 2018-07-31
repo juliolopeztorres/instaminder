@@ -43,6 +43,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
 
         log("onReceive: Call to upload method");
+        log = "-----------";
         this.uploadPhoto(photoId);
     }
 
