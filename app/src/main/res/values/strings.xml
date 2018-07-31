@@ -33,7 +33,8 @@
     <string name="home_component_card_photo_state_icon_description">Photo\'s state icon</string>
     <string name="home_component_card_photo_date_time_format">%s %s</string>
     <string name="home_component_dialog_user_info_error_message">You need to provide a valid Instagram Nick/Username and password in order to upload photos</string>
-    <string name="home_component_dialog_user_info_action_label">Go to options</string>
+    <string name="home_component_dialog_user_info_positive_action_label">Go to options</string>
+    <string name="home_component_dialog_photo_info_negative_action_label">Close</string>
     <string name="home_component_dialog_photo_show_log_label">Show log</string>
     <string name="home_component_dialog_photo_hide_log_label">Hide log</string>
     <string name="home_component_dialog_photo_save_label">Reschedule</string>
