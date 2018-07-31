@@ -23,7 +23,7 @@
     <string name="options_component_password_input_label">Password</string>
     <string name="options_component_btn_save_label">Save</string>
     <string name="options_component_btn_save_icon_description">Save your information</string>
-    <string name="options_component_title">Options</string>
+    <string name="options_component_title">Login</string>
     <string name="options_component_empty_input_error_message">Field cannot be empty</string>
     <string name="home_component_card_photo_miniature_description">Photo miniature preview</string>
     <string name="home_component_card_photo_add_new_photo_label">Add new photo</string>
