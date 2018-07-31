@@ -25,7 +25,7 @@ public class PreferencesWrapper {
         this.preferences.edit()
                 .putString(PREFERENCES_NICK_KEY, this.encode(nick))
                 .putString(PREFERENCES_PASSWORD_KEY, this.encode(password))
-                .apply();
+                .commit();
     }
 
     private String encode(String toEncode) {
