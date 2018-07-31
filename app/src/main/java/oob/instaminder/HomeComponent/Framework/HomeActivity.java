@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -89,6 +90,7 @@ public class HomeActivity extends AppCompatActivity implements ViewInterface, Ph
         }
 
         this.loginWithNewInformationUseCase.login();
+        this.getAllPhotosUseCase.fetchAll();
     }
 
     private void tintActionBarTextColor() {
@@ -204,13 +206,6 @@ public class HomeActivity extends AppCompatActivity implements ViewInterface, Ph
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-
-        this.photoCardAdapter.setPhotos(this.getAllPhotosUseCase.getAll());
-    }
-
-    @Override
     public void onPhotoClicked(Photo photo) {
         new PhotoCardDialogAdapter(this, photo, this).show();
     }
@@ -229,14 +224,15 @@ public class HomeActivity extends AppCompatActivity implements ViewInterface, Ph
     @Override
     public void onSaveClicked(Photo photo, Date date) {
         this.updatePhotoDateUseCase.update(photo.getId(), date);
-        photo.setDate(date);
-        photo.setState(oob.instaminder.Util.Database.Photo.PENDING);
-        this.photoCardAdapter.notifyItemChanged(photo);
     }
 
     @Override
     public void onRemoveClicked(Photo photo) {
         this.removePhotoUseCase.remove(photo.getId());
-        this.photoCardAdapter.notifyItemRemoved(photo);
+    }
+
+    @Override
+    public void loadPhotos(List<Photo> photoList) {
+        this.photoCardAdapter.setPhotos(photoList);
     }
 }

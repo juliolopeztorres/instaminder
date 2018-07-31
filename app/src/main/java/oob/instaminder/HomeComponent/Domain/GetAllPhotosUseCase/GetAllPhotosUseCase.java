@@ -6,7 +6,7 @@ import javax.inject.Inject;
 
 import oob.instaminder.HomeComponent.Domain.GetAllPhotosUseCase.Model.Photo;
 
-public class GetAllPhotosUseCase {
+public class GetAllPhotosUseCase implements GetAllPhotosUseCaseRepositoryInterface.Callback {
     private GetAllPhotosUseCaseViewInterface viewInterface;
     private GetAllPhotosUseCaseRepositoryInterface repositoryInterface;
 
@@ -16,7 +16,12 @@ public class GetAllPhotosUseCase {
         this.repositoryInterface = repositoryInterface;
     }
 
-    public List<Photo> getAll() {
-        return this.repositoryInterface.getAllOrderByDate();
+    public void fetchAll() {
+        this.repositoryInterface.fetchAllOrderByDate(this);
+    }
+
+    @Override
+    public void onPhotoListRetrieved(List<Photo> photoList) {
+        this.viewInterface.loadPhotos(photoList);
     }
 }

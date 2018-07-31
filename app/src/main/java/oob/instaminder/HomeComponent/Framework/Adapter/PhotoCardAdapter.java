@@ -31,7 +31,7 @@ public class PhotoCardAdapter extends RecyclerView.Adapter<PhotoCardAdapter.View
     public PhotoCardAdapter(Context context, OnPhotoCardEvent callback) {
         this.context = context;
         this.callback = callback;
-        this.photos.add(new Photo());
+        this.photos.add(null);
     }
 
     @NonNull
@@ -91,16 +91,6 @@ public class PhotoCardAdapter extends RecyclerView.Adapter<PhotoCardAdapter.View
         photos.add(null);
         this.photos = photos;
         this.notifyDataSetChanged();
-    }
-
-    public void notifyItemChanged(Photo photo) {
-        this.notifyItemChanged(this.photos.indexOf(photo));
-    }
-
-    public void notifyItemRemoved(Photo photo) {
-        int position = this.photos.indexOf(photo);
-        this.photos.remove(position);
-        this.notifyItemRemoved(position);
     }
 
     public interface OnPhotoCardEvent {
