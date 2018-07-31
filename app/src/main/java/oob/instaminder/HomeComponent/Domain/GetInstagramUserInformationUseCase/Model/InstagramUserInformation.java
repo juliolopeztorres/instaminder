@@ -2,13 +2,11 @@ package oob.instaminder.HomeComponent.Domain.GetInstagramUserInformationUseCase.
 
 public class InstagramUserInformation {
     private String nick;
-    private String following;
-    private String followers;
+    private int followers;
     private String profilePicUrl;
 
-    public InstagramUserInformation(String nick, String following, String followers, String profilePicUrl) {
+    public InstagramUserInformation(String nick, int followers, String profilePicUrl) {
         this.nick = nick;
-        this.following = following;
         this.followers = followers;
         this.profilePicUrl = profilePicUrl;
     }
@@ -17,11 +15,7 @@ public class InstagramUserInformation {
         return nick;
     }
 
-    public String getFollowing() {
-        return following;
-    }
-
-    public String getFollowers() {
+    public int getFollowers() {
         return followers;
     }
 

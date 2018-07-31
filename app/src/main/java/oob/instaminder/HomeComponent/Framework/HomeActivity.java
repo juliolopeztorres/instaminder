@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import java.text.NumberFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -177,10 +178,8 @@ public class HomeActivity extends AppCompatActivity implements ViewInterface, Ph
                 HomeActivity.this.setTitle("@" + instagramUserInformation.getNick());
 
                 if (HomeActivity.this.followersIndicator != null) {
-                    ((TextView) HomeActivity.this.followersIndicator.findViewById(R.id.following))
-                            .setText(
-                                    String.format(HomeActivity.this.getString(R.string.home_component_follow_followers_format), instagramUserInformation.getFollowing(), instagramUserInformation.getFollowers())
-                            );
+                    ((TextView) HomeActivity.this.followersIndicator.findViewById(R.id.followers))
+                            .setText(NumberFormat.getNumberInstance().format(instagramUserInformation.getFollowers()));
                 }
             }
         });
