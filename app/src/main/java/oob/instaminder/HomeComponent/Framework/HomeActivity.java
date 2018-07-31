@@ -84,6 +84,7 @@ public class HomeActivity extends AppCompatActivity implements ViewInterface, Ph
         this.tintActionBarTextColor();
 
         this.setUpPhotoCardList();
+        this.getAllPhotosUseCase.fetchAll();
 
         if (!this.checkNickPasswordStoredUseCase.check()) {
             this.goToOptionsComponent();
@@ -91,7 +92,6 @@ public class HomeActivity extends AppCompatActivity implements ViewInterface, Ph
         }
 
         this.loginWithNewInformationUseCase.login();
-        this.getAllPhotosUseCase.fetchAll();
     }
 
     private void tintActionBarTextColor() {
@@ -133,14 +133,22 @@ public class HomeActivity extends AppCompatActivity implements ViewInterface, Ph
                         this,
                         this.getString(R.string.dialog_user_info_warning_title),
                         this.getString(R.string.home_component_dialog_user_info_error_message),
-                        this.getString(R.string.home_component_dialog_user_info_action_label),
+                        this.getString(R.string.home_component_dialog_user_info_positive_action_label),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 HomeActivity.this.goToOptionsComponent();
                             }
                         },
-                        true);
+                        this.getString(R.string.home_component_dialog_photo_info_negative_action_label),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        },
+                        true
+                );
             }
 
             return;
