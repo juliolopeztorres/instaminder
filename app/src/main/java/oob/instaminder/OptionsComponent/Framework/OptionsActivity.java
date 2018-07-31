@@ -56,17 +56,34 @@ public class OptionsActivity extends AppCompatActivity implements ViewInterface 
                 .build();
         component.inject(this);
 
-        this.setBackButton();
-        this.tintActionBarTextColor();
-
-        this.populateInputsWithSavedData();
+        this.init();
     }
 
-    private void populateInputsWithSavedData() {
+    private void init() {
+        this.tintActionBarTextColor();
+        this.setTitle();
+
         UserInformation userInformation = this.getUserInformationUseCase.get();
 
+        if (!userInformation.getNick().isEmpty()) {
+            this.setBackButton();
+        }
+
+        this.populateInputsWithSavedData(userInformation);
+    }
+
+    private void populateInputsWithSavedData(UserInformation userInformation) {
         this.nickInput.setText(userInformation.getNick());
         this.passwordInput.setText(userInformation.getPassword());
+    }
+
+    private void setTitle() {
+        ActionBar actionBar = this.getSupportActionBar();
+
+        if (actionBar == null) {
+            return;
+        }
+        actionBar.setTitle(R.string.options_component_title);
     }
 
     private void setBackButton() {
@@ -76,7 +93,6 @@ public class OptionsActivity extends AppCompatActivity implements ViewInterface 
             return;
         }
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(R.string.options_component_title);
     }
 
     private void tintActionBarTextColor() {
@@ -97,7 +113,7 @@ public class OptionsActivity extends AppCompatActivity implements ViewInterface 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        this.setResult(Activity.RESULT_CANCELED);
+        this.setResult(Activity.RESULT_OK);
         this.finish();
         return true;
     }
@@ -107,7 +123,7 @@ public class OptionsActivity extends AppCompatActivity implements ViewInterface 
         String nick = this.nickInput.getText().toString();
         String password = this.passwordInput.getText().toString();
 
-        this.clearInputs();
+        this.clearInputsErrors();
 
         if (nick.isEmpty()) {
             this.showNickInputError();
@@ -124,7 +140,7 @@ public class OptionsActivity extends AppCompatActivity implements ViewInterface 
         this.finish();
     }
 
-    private void clearInputs() {
+    private void clearInputsErrors() {
         this.nickInputWrapper.setErrorEnabled(false);
         this.nickInputWrapper.setError("");
         this.passwordInputWrapper.setErrorEnabled(false);
