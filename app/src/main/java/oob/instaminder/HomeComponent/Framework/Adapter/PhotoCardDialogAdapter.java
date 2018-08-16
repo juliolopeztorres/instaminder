@@ -2,12 +2,13 @@ package oob.instaminder.HomeComponent.Framework.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import butterknife.BindView;
@@ -16,12 +17,9 @@ import butterknife.OnClick;
 import oob.instaminder.HomeComponent.Domain.GetAllPhotosUseCase.Model.Photo;
 import oob.instaminder.R;
 import oob.instaminder.Util.DateTimePickerHelper;
-import oob.instaminder.Util.StringUtil;
 import oob.instaminder.Util.ViewUtil;
 
 public class PhotoCardDialogAdapter {
-    private static final int TITLE_CHARACTERS_LIMIT = 45;
-
     @BindView(R.id.photoTitle)
     TextView photoTitle;
     @BindView(R.id.photoDate)
@@ -34,7 +32,10 @@ public class PhotoCardDialogAdapter {
     View showLogContainer;
     @BindView(R.id.showLogLabel)
     TextView showLogLabel;
-
+    @BindView(R.id.photoCaption)
+    EditText photoCaption;
+    @BindView(R.id.photoCaptionContainer)
+    TextInputLayout photoCaptionContainer;
 
     private AlertDialog dialog;
     private Context context;
@@ -69,16 +70,15 @@ public class PhotoCardDialogAdapter {
     }
 
     private void setUpViewData() {
-        this.photoTitle.setText(String.format("%s", StringUtil.limitIfGreaterThan(this.photo.getCaption(), TITLE_CHARACTERS_LIMIT)));
+        this.photoTitle.setText(this.context.getString(R.string.home_component_dialog_photo_title));
+        this.photoCaption.setText(this.photo.getCaption());
         this.photoLog.setText(this.photo.getLog());
 
         if (this.photo.getState().equals(oob.instaminder.Util.Database.Photo.ERROR) && !this.photo.getLog().isEmpty()) {
             ViewUtil.makeViewVisible(this.showLogContainer);
         }
 
-        this.dateTimePickerHelper = new DateTimePickerHelper(this.context, this.photoDate, this.photoTime);
-        this.photoDate.setText(SimpleDateFormat.getDateInstance().format(this.photo.getDate()));
-        this.photoTime.setText(SimpleDateFormat.getTimeInstance().format(this.photo.getDate()));
+        this.dateTimePickerHelper = new DateTimePickerHelper(this.context, this.photo.getDate(), this.photoDate, this.photoTime);
     }
 
     public void show() {
@@ -99,8 +99,20 @@ public class PhotoCardDialogAdapter {
 
     @OnClick(R.id.saveContainer)
     void onSaveContainerClicked() {
-        this.dialog.dismiss();
-        this.callback.onSaveClicked(this.photo, this.dateTimePickerHelper.get());
+        if (this.validateInputs()) {
+            this.photoCaptionContainer.setError("");
+            this.dialog.dismiss();
+
+            this.photo.setCaption(this.photoCaption.getText().toString());
+            this.callback.onSaveClicked(this.photo, this.dateTimePickerHelper.get());
+            return;
+        }
+
+        this.photoCaptionContainer.setError(this.context.getString(R.string.add_photo_component_dialog_save_photo_error_message));
+    }
+
+    private boolean validateInputs() {
+        return !this.photoCaption.getText().toString().isEmpty();
     }
 
     @OnClick(R.id.removeContainer)

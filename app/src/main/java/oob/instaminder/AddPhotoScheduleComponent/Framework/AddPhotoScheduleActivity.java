@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.yalantis.ucrop.UCrop;
+import com.yalantis.ucrop.UCropActivity;
 import com.yalantis.ucrop.model.AspectRatio;
 
 import java.io.File;
@@ -103,7 +104,7 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
     }
 
     private void setUpDateTimeListener() {
-        this.dateTimePickerHelper = new DateTimePickerHelper(this, this.photoDate, this.photoTime);
+        this.dateTimePickerHelper = new DateTimePickerHelper(this, null, this.photoDate, this.photoTime);
     }
 
     private void setUpPhotoCaptionListener() {
@@ -254,11 +255,11 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
                 new AspectRatio(this.getString(R.string.edit_photo_component_horizontal_aspect_ratio_title), 16, 9) // LANDSCAPE
         );
 
+        options.setAllowedGestures(UCropActivity.SCALE, UCropActivity.NONE, UCropActivity.SCALE);
         options.setToolbarColor(ContextCompat.getColor(this, R.color.colorAccentWhite));
         options.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         options.setActiveWidgetColor(ContextCompat.getColor(this, R.color.colorPrimary));
         options.setToolbarWidgetColor(ContextCompat.getColor(this, R.color.colorPrimary));
-
 
         options.setToolbarTitle(this.getResources().getString(R.string.edit_photo_component_title));
 

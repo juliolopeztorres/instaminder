@@ -230,7 +230,7 @@ public class HomeActivity extends AppCompatActivity implements ViewInterface, Ph
 
     @Override
     public void onSaveClicked(Photo photo, Date date) {
-        this.updatePhotoDateUseCase.update(photo.getId(), date);
+        this.updatePhotoDateUseCase.update(photo, date);
     }
 
     @Override

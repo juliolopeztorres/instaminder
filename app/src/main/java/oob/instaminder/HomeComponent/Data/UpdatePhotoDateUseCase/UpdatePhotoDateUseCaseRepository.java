@@ -22,21 +22,22 @@ public class UpdatePhotoDateUseCaseRepository implements UpdatePhotoDateUseCaseR
     }
 
     @Override
-    public void update(String photoId, Date date) {
-        Photo photo = this.realm.where(Photo.class).equalTo("id", photoId).findFirst();
+    public void update(oob.instaminder.HomeComponent.Domain.GetAllPhotosUseCase.Model.Photo photo, Date date) {
+        Photo photoDB = this.realm.where(Photo.class).equalTo("id", photo.getId()).findFirst();
 
-        if (photo == null) {
+        if (photoDB == null) {
             return;
         }
 
-        this.removeAlarm(photo);
+        this.removeAlarm(photoDB);
 
         this.realm.beginTransaction();
-        photo.setDate(date);
-        photo.setState(Photo.PENDING);
+        photoDB.setCaption(photo.getCaption());
+        photoDB.setDate(date);
+        photoDB.setState(Photo.PENDING);
         this.realm.commitTransaction();
 
-        this.setUpAlarm(photo);
+        this.setUpAlarm(photoDB);
     }
 
     private void setUpAlarm(Photo photo) {

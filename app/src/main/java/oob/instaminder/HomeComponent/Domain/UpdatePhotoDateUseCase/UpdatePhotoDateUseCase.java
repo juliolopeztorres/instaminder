@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
+import oob.instaminder.HomeComponent.Domain.GetAllPhotosUseCase.Model.Photo;
+
 public class UpdatePhotoDateUseCase {
     private UpdatePhotoDateUseCaseViewInterface viewInterface;
     private UpdatePhotoDateUseCaseRepositoryInterface repositoryInterface;
@@ -14,7 +16,7 @@ public class UpdatePhotoDateUseCase {
         this.repositoryInterface = repositoryInterface;
     }
 
-    public void update(String photoId, Date date) {
-        this.repositoryInterface.update(photoId, date);
+    public void update(Photo photo, Date date) {
+        this.repositoryInterface.update(photo, date);
     }
 }

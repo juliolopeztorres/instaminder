@@ -12,11 +12,17 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.annotation.Nullable;
+
 public class DateTimePickerHelper {
 
     private Calendar calendar = Calendar.getInstance();
 
-    public DateTimePickerHelper(final Context context, final TextView date, final TextView time) {
+    public DateTimePickerHelper(final Context context, @Nullable Date initDate, final TextView date, final TextView time) {
+        if (initDate != null) {
+            this.calendar.setTime(initDate);
+        }
+
         date.setText(SimpleDateFormat.getDateInstance().format(this.calendar.getTime()));
         time.setText(SimpleDateFormat.getTimeInstance().format(this.calendar.getTime()));
 

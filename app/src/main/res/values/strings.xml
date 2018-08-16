@@ -37,7 +37,8 @@
     <string name="home_component_dialog_photo_info_negative_action_label">Close</string>
     <string name="home_component_dialog_photo_show_log_label">Show log</string>
     <string name="home_component_dialog_photo_hide_log_label">Hide log</string>
-    <string name="home_component_dialog_photo_save_label">Reschedule</string>
+    <string name="home_component_dialog_photo_save_label">Edit</string>
+    <string name="home_component_dialog_photo_title">Quick Edit</string>
     <string name="home_component_dialog_photo_remove_label">Remove</string>
     <string name="edit_photo_component_title">Edit photo</string>
     <string name="edit_photo_component_vertical_aspect_ratio_title">Vertical</string>

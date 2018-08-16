@@ -4,8 +4,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.annotation.Nullable;
+
 public class ByteUtil {
-    public static byte[] convertInputStreamToByteArray(InputStream inputStream) {
+    public static byte[] convertInputStreamToByteArray(@Nullable InputStream inputStream) {
+        if (inputStream == null) {
+            return null;
+        }
+
         byte[] bytes = null;
 
         try {
