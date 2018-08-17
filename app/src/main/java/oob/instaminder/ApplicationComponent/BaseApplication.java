@@ -9,6 +9,7 @@ import oob.instaminder.ApplicationComponent.DependencyInjection.PreferencesModul
 
 public class BaseApplication extends Application {
     private static final String PREFERENCES_NAME = "instaminder_preferences";
+    private boolean firstLaunch;
 
     private BaseApplicationComponentInterface component;
 
@@ -21,9 +22,23 @@ public class BaseApplication extends Application {
                 .preferencesModule(new PreferencesModule(this, PREFERENCES_NAME))
                 .databaseModule(new DatabaseModule(this))
                 .build();
+
+        this.defineFirstLaunch();
+    }
+
+    private void defineFirstLaunch() {
+        this.firstLaunch = this.component.getPreferencesWrapper().isFirstLaunch();
+
+        if (this.firstLaunch) {
+            this.component.getPreferencesWrapper().updateFirstLaunch();
+        }
     }
 
     public BaseApplicationComponentInterface getComponent() {
         return component;
+    }
+
+    public boolean isFirstLaunch() {
+        return this.firstLaunch;
     }
 }
