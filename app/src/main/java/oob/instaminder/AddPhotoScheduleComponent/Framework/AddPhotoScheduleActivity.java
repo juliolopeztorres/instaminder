@@ -22,6 +22,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.UCropActivity;
 import com.yalantis.ucrop.model.AspectRatio;
@@ -34,6 +37,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import oob.instaminder.AddPhotoScheduleComponent.Domain.GetNumberAdShownUseCase.GetNumberAdShownUseCase;
+import oob.instaminder.AddPhotoScheduleComponent.Domain.IncreaseNumberAdShownUseCase.IncreaseNumberAdShownUseCase;
 import oob.instaminder.AddPhotoScheduleComponent.Domain.SavePhotoUseCase.Model.Photo;
 import oob.instaminder.AddPhotoScheduleComponent.Domain.SavePhotoUseCase.SavePhotoUseCase;
 import oob.instaminder.AddPhotoScheduleComponent.Domain.ViewInterface;
@@ -53,6 +58,7 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
     public static final String INTENT_PROFILE_PHOTO_URL_KEY = "profilePhotoUrlKey";
     private static final int REQUEST_CODE_SEARCH_PHOTO = 1;
     private static final String PHOTO_PLACEHOLDER_NAME = "photoEditingSpaceReserve";
+    private static final int NUMBER_OF_ADS_UNTIL_VIDEO = 10;
 
     @BindView(R.id.photoCaption)
     EditText photoCaption;
@@ -75,9 +81,14 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
 
     @Inject
     SavePhotoUseCase savePhotoUseCase;
+    @Inject
+    GetNumberAdShownUseCase getNumberAdShownUseCase;
+    @Inject
+    IncreaseNumberAdShownUseCase increaseNumberAdShownUseCase;
 
     private byte[] photoBuffer;
     private DateTimePickerHelper dateTimePickerHelper;
+    private InterstitialAd interstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +112,21 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
         this.setUpPreviewToolbarInformation();
         this.setUpPhotoCaptionListener();
         this.setUpDateTimeListener();
+        this.setUpAd();
+    }
+
+    private void setUpAd() {
+        MobileAds.initialize(this, this.getString(R.string.ad_id));
+
+        this.interstitialAd = new InterstitialAd(this);
+
+        if (this.getNumberAdShownUseCase.get() % NUMBER_OF_ADS_UNTIL_VIDEO == 0) {
+            this.interstitialAd.setAdUnitId(this.getString(R.string.ad_unit_id_video));
+        } else {
+            this.interstitialAd.setAdUnitId(this.getString(R.string.ad_unit_id_text_image));
+        }
+
+        this.interstitialAd.loadAd(new AdRequest.Builder().build());
     }
 
     private void setUpDateTimeListener() {
@@ -238,8 +264,17 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
 
         this.savePhotoUseCase.save(photo);
 
+        this.showAd();
+
         this.setResult(Activity.RESULT_OK);
         this.finish();
+    }
+
+    private void showAd() {
+        if (!((BaseApplication) this.getApplication()).isFirstLaunch() && this.interstitialAd.isLoaded()) {
+            this.interstitialAd.show();
+            this.increaseNumberAdShownUseCase.increase();
+        }
     }
 
     private File getTempFile() {
