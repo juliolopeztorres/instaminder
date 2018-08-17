@@ -53,6 +53,9 @@ dependencies {
     // Ads
     implementation 'com.google.android.gms:play-services-ads:15.0.1'
 
+    // Conflict
+    implementation "com.android.support:customtabs:27.1.1"
+
     // Inherited
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
