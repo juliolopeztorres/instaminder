@@ -256,8 +256,9 @@
                         android:id="@+id/savePhotoLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/options_component_btn_save_label"
+                        android:text="@string/add_photo_component_button_save_label"
                         android:textColor="@android:color/white"
+                        android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -266,7 +267,7 @@
                         android:layout_height="20dp"
                         android:layout_marginStart="5dp"
                         android:background="@drawable/ic_add_primary"
-                        android:contentDescription="@string/options_component_btn_save_icon_description"
+                        android:contentDescription="@string/add_photo_component_button_save_label"
                         app:layout_constraintBottom_toBottomOf="@+id/savePhotoLabel"
                         app:layout_constraintStart_toEndOf="@+id/savePhotoLabel"
                         app:layout_constraintTop_toTopOf="@+id/savePhotoLabel" />
