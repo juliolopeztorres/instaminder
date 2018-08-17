@@ -1,14 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="oob.instaminder.HomeComponent.Framework.HomeActivity">
 
+    <LinearLayout
+        android:id="@+id/upToDateContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.3"
+                android:background="@color/colorSpecialAccent" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/home_component_up_to_date_label"
+                android:padding="10dp"
+                android:src="@drawable/ic_instagram_up_to_date" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.3"
+                android:background="@color/colorSpecialAccent" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:text="@string/home_component_up_to_date_label"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/photoCardRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none" />
+        android:scrollbars="none"
+        app:layout_constraintTop_toBottomOf="@id/upToDateContainer" />
 
 </android.support.constraint.ConstraintLayout>

@@ -41,10 +41,14 @@ import oob.instaminder.HomeComponent.Framework.DependencyInjection.HomeComponent
 import oob.instaminder.OptionsComponent.Framework.OptionsActivity;
 import oob.instaminder.Util.DialogUtil;
 import oob.instaminder.R;
+import oob.instaminder.Util.ViewUtil;
 
 public class HomeActivity extends AppCompatActivity implements ViewInterface, PhotoCardAdapter.OnPhotoCardEvent, PhotoCardDialogAdapter.PhotoCardDialogEvent {
+
     @BindView(R.id.photoCardRecyclerView)
     RecyclerView photoCardRecyclerView;
+    @BindView(R.id.upToDateContainer)
+    View upToDateContainer;
 
     @Inject
     CheckNickPasswordStoredUseCase checkNickPasswordStoredUseCase;
@@ -241,5 +245,11 @@ public class HomeActivity extends AppCompatActivity implements ViewInterface, Ph
     @Override
     public void loadPhotos(List<Photo> photoList) {
         this.photoCardAdapter.setPhotos(photoList);
+
+        if (photoList.size() == 1) {
+            ViewUtil.makeViewVisible(this.upToDateContainer);
+        } else {
+            ViewUtil.makeViewGone(this.upToDateContainer);
+        }
     }
 }

@@ -40,6 +40,7 @@
     <string name="home_component_dialog_photo_save_label">Edit</string>
     <string name="home_component_dialog_photo_title">Quick Edit</string>
     <string name="home_component_dialog_photo_remove_label">Remove</string>
+    <string name="home_component_up_to_date_label">You\'re All Caught Up</string>
     <string name="edit_photo_component_title">Edit photo</string>
     <string name="edit_photo_component_vertical_aspect_ratio_title">Vertical</string>
     <string name="edit_photo_component_square_aspect_ratio_title">Square</string>
