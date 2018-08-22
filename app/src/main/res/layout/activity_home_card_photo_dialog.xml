@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:focusableInTouchMode="true"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/photoTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/photoCaptionContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/photoCaption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/add_photo_component_caption_input_label"
+                android:inputType="textMultiLine"
+                android:textColor="@color/colorPrimary"
+                android:textColorHint="@color/colorPrimary" />
+        </android.support.design.widget.TextInputLayout>
+
+        <include layout="@layout/inc_date_time_inputs" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/showLogContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/ripple_primary_transparent"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="5dp"
+                    android:contentDescription="@string/home_component_dialog_photo_show_log_label"
+                    android:src="@drawable/ic_show_log_primary" />
+
+                <TextView
+                    android:id="@+id/showLogLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/home_component_dialog_photo_show_log_label" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/saveContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/ripple_primary_transparent"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="5dp"
+                    android:contentDescription="@string/home_component_dialog_photo_save_label"
+                    android:src="@drawable/ic_waiting_primary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/home_component_dialog_photo_save_label" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/removeContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/ripple_primary_transparent"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="5dp"
+                    android:contentDescription="@string/home_component_dialog_photo_remove_label"
+                    android:src="@drawable/ic_remove_primary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/home_component_dialog_photo_remove_label" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/photoLog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:visibility="gone" />
+    </LinearLayout>
+</ScrollView>

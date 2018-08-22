@@ -1,0 +1,4 @@
+configurations.maybeCreate("default")
+artifacts.add("default", file('Instagram4Android.aar'))
+
+// Lib Version 0.2.7 without com.writingminds:FFmpegAndroid dependency
