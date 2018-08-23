@@ -8,6 +8,9 @@
     <!--string name="ad_unit_id_video">ca-app-pub-4972678244027743/2271967360</string--> <!-- Production -->
     <string name="dialog_user_info_error_title">Error</string>
     <string name="dialog_user_info_warning_title">Warning</string>
+    <string name="dialog_user_grant_external_read_permission_rationale">We need to READ external directories in order to show you all pics. If this permissions is not granted, you could not be choosing between all pictures stored in your phone (internal/external storage)</string>
+    <string name="dialog_user_grant_external_read_permission_rationale_ok_label">Ask again</string>
+    <string name="dialog_user_grant_external_read_permission_last_deny">The photo piker could not work as expected for some pictures without the permission. Consider turn it on later</string>
     <string name="inc_date_time_inputs_date_label">Date</string>
     <string name="inc_date_time_inputs_time_label">Time</string>
     <string name="inc_date_time_tap_hint_label">Tap on Date/Time in order to update its values</string>

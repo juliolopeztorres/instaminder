@@ -1,10 +1,15 @@
 package oob.instaminder.AddPhotoScheduleComponent.Framework;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -37,8 +42,10 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import oob.instaminder.AddPhotoScheduleComponent.Domain.ExternalStorageLastDialogShownUseCase.ExternalStorageLastDialogShownUseCase;
 import oob.instaminder.AddPhotoScheduleComponent.Domain.GetNumberAdShownUseCase.GetNumberAdShownUseCase;
 import oob.instaminder.AddPhotoScheduleComponent.Domain.IncreaseNumberAdShownUseCase.IncreaseNumberAdShownUseCase;
+import oob.instaminder.AddPhotoScheduleComponent.Domain.MarkExternalStorageLastDialogAsShownUseCase.MarkExternalStorageLastDialogAsShownUseCase;
 import oob.instaminder.AddPhotoScheduleComponent.Domain.SavePhotoUseCase.Model.Photo;
 import oob.instaminder.AddPhotoScheduleComponent.Domain.SavePhotoUseCase.SavePhotoUseCase;
 import oob.instaminder.AddPhotoScheduleComponent.Domain.ViewInterface;
@@ -57,6 +64,7 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
     public static final String INTENT_USERNAME_KEY = "usernameKey";
     public static final String INTENT_PROFILE_PHOTO_URL_KEY = "profilePhotoUrlKey";
     private static final int REQUEST_CODE_SEARCH_PHOTO = 1;
+    private static final int REQUEST_CODE_EXTERNAL_STORAGE_PERMISSION_REQUEST = 2;
     private static final String PHOTO_PLACEHOLDER_NAME = "photoEditingSpaceReserve";
     private static final int NUMBER_OF_ADS_UNTIL_VIDEO = 10;
 
@@ -85,6 +93,10 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
     GetNumberAdShownUseCase getNumberAdShownUseCase;
     @Inject
     IncreaseNumberAdShownUseCase increaseNumberAdShownUseCase;
+    @Inject
+    ExternalStorageLastDialogShownUseCase externalStorageLastDialogShownUseCase;
+    @Inject
+    MarkExternalStorageLastDialogAsShownUseCase markExternalStorageLastDialogAsShownUseCase;
 
     private byte[] photoBuffer;
     private DateTimePickerHelper dateTimePickerHelper;
@@ -187,6 +199,18 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
 
     @OnClick(R.id.photoImagePreviewContainer)
     public void onPhotoImagePreviewContainerClicked() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    REQUEST_CODE_EXTERNAL_STORAGE_PERMISSION_REQUEST);
+            return;
+        }
+
+        this.pickPhotoFromStorage();
+    }
+
+    private void pickPhotoFromStorage() {
         Intent chooserIntent = Intent
                 .createChooser(
                         new Intent(Intent.ACTION_GET_CONTENT).setType("image/*"),
@@ -219,6 +243,55 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CODE_EXTERNAL_STORAGE_PERMISSION_REQUEST) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                this.onPhotoImagePreviewContainerClicked();
+            } else {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    DialogUtil.showAlertDialog(
+                            this,
+                            this.getString(R.string.dialog_user_info_warning_title),
+                            this.getString(R.string.dialog_user_grant_external_read_permission_rationale),
+                            this.getString(R.string.dialog_user_grant_external_read_permission_rationale_ok_label),
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ActivityCompat.requestPermissions(AddPhotoScheduleActivity.this,
+                                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                            REQUEST_CODE_EXTERNAL_STORAGE_PERMISSION_REQUEST);
+                                }
+                            },
+                            false
+                    );
+
+                    return;
+                }
+
+                if (!this.externalStorageLastDialogShownUseCase.check()) {
+                    DialogUtil.showAlertDialog(
+                            this,
+                            this.getString(R.string.dialog_user_info_warning_title),
+                            this.getString(R.string.dialog_user_grant_external_read_permission_last_deny),
+                            this.getString(android.R.string.ok),
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    AddPhotoScheduleActivity.this.markExternalStorageLastDialogAsShownUseCase.mark();
+                                    AddPhotoScheduleActivity.this.pickPhotoFromStorage();
+                                }
+                            },
+                            false
+                    );
+                } else {
+                    this.pickPhotoFromStorage();
+                }
+            }
+        }
     }
 
     private void onPhotoLoadedFromDisk(Uri photoUri) {
