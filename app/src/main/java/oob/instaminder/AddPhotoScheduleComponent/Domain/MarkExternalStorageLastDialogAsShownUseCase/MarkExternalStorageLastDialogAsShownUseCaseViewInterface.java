@@ -1,0 +1,4 @@
+package oob.instaminder.AddPhotoScheduleComponent.Domain.MarkExternalStorageLastDialogAsShownUseCase;
+
+public interface MarkExternalStorageLastDialogAsShownUseCaseViewInterface {
+}

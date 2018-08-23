@@ -8,6 +8,7 @@ public class PreferencesWrapper {
     private String PREFERENCES_PASSWORD_KEY = "preferences_password_key";
     private String PREFERENCES_FIRST_LAUNCH_KEY = "preferences_first_launch_key";
     private String PREFERENCES_NUMBER_AD_SHOWN = "preferences_number_ad_shown";
+    private String PREFERENCES_EXTERNAL_STORAGE_DIALOG_SHOWN = "preferences_external_storage_dialog_shown";
 
     private SharedPreferences preferences;
 
@@ -48,6 +49,16 @@ public class PreferencesWrapper {
         this.preferences.edit()
                 .putInt(PREFERENCES_NUMBER_AD_SHOWN, this.getNumberAdShown() + 1)
                 .apply();
+    }
+
+    public void markExternalStorageDialogAsShown() {
+        this.preferences.edit()
+                .putBoolean(PREFERENCES_EXTERNAL_STORAGE_DIALOG_SHOWN, true)
+                .apply();
+    }
+
+    public boolean externalStorageLastDialogWasShown() {
+        return this.preferences.getBoolean(PREFERENCES_EXTERNAL_STORAGE_DIALOG_SHOWN, false);
     }
 
     private String encode(String toEncode) {
