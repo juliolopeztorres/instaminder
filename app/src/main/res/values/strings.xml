@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">Instaminder</string>
     <string name="ad_id">ca-app-pub-3940256099942544~3347511713</string>
-    <!--string name="ad_id">ca-app-pub-4972678244027743~6426000644</string--> <!-- Production -->
+    <!--string name="ad_id">ca-app-pub-4972678244027743~1052498773</string--> <!-- Production -->
     <string name="ad_unit_id_text_image">ca-app-pub-3940256099942544/1033173712</string>
-    <string name="ad_unit_id_video">ca-app-pub-3940256099942544/1033173712</string>
-    <!--string name="ad_unit_id_text_image">ca-app-pub-4972678244027743/5492192924</string--> <!-- Production -->
-    <!--string name="ad_unit_id_video">ca-app-pub-4972678244027743/2271967360</string--> <!-- Production -->
+    <string name="ad_unit_id_video">ca-app-pub-3940256099942544/8691691433</string>
+    <!--string name="ad_unit_id_text_image">ca-app-pub-4972678244027743/1959629604</string--> <!-- Production -->
+    <!--string name="ad_unit_id_video">ca-app-pub-4972678244027743/1987549763</string--> <!-- Production -->
     <string name="dialog_user_info_error_title">Error</string>
     <string name="dialog_user_info_warning_title">Warning</string>
     <string name="dialog_user_grant_external_read_permission_rationale">We need to READ external directories in order to show you all pics. If this permissions is not granted, you could not be choosing between all pictures stored in your phone (internal/external storage)</string>
