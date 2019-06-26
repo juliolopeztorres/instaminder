@@ -30,6 +30,9 @@ You can also preview the final view of your content, write the caption and the h
 Any comment will be welcome.
 
 Enjoy!
+
+[Download](app/release/Instaminder-v1.0.3.apk) the app last version from this repo (app/release/), signed with [OutOfbounds Soft.](https://play.google.com/store/apps/developer?id=Out+of+Bounds+Software+Inc) license
+
  
 # Usage
 
