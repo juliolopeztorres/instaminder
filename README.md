@@ -22,6 +22,11 @@ You can also preview the final view of your content, write the caption and the h
 * Take in account that the picture will be upload at your time zone (i.e. GMT, BST, IST,…)
 * You can’t edit your pictures with instaminder (only crop and rotate), just set upload times.
 
+
+**NOTE**
+
+* This app is by no means affiliated to Instagram
+
 Any comment will be welcome.
 
 Enjoy!
