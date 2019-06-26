@@ -67,9 +67,7 @@ Some technologies/tools used are:
 - Java language
 - [Dagger2](https://github.com/google/dagger) for Dependency Injection
 - [Butter Knife](https://github.com/JakeWharton/butterknife) for binding UI elements
-- [Retrofit2](https://github.com/square/retrofit) with [okHttp3](https://github.com/square/okhttp) as Http client and requests logging
 - [Glide](https://github.com/bumptech/glide) for loading Image resources
-- [Timber](https://github.com/JakeWharton/timber) for logging
 - [Realm](https://github.com/realm/realm-java) as local DB management
 - [RoundedImageView](https://github.com/vinc3m1/RoundedImageView) from [Vince Mi](https://github.com/vinc3m1) (Nice work dude!)
 - [uCrop](https://github.com/Yalantis/uCrop) from [Yalantis](https://github.com/Yalantis)
