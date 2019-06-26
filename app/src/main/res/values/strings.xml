@@ -1,16 +1,10 @@
 <resources>
     <string name="app_name">Instaminder</string>
-    <string name="ad_id">ca-app-pub-3940256099942544~3347511713</string>
-    <!--string name="ad_id">ca-app-pub-4972678244027743~1052498773</string--> <!-- Production -->
-    <string name="ad_unit_id_text_image">ca-app-pub-3940256099942544/1033173712</string>
-    <string name="ad_unit_id_video">ca-app-pub-3940256099942544/8691691433</string>
-    <!--string name="ad_unit_id_text_image">ca-app-pub-4972678244027743/1959629604</string--> <!-- Production -->
-    <!--string name="ad_unit_id_video">ca-app-pub-4972678244027743/1987549763</string--> <!-- Production -->
     <string name="dialog_user_info_error_title">Error</string>
     <string name="dialog_user_info_warning_title">Warning</string>
     <string name="dialog_user_grant_external_read_permission_rationale">We need to READ external directories in order to show you all pics. If this permissions is not granted, you could not be choosing between all pictures stored in your phone (internal/external storage)</string>
     <string name="dialog_user_grant_external_read_permission_rationale_ok_label">Ask again</string>
-    <string name="dialog_user_grant_external_read_permission_last_deny">The photo piker could not work as expected for some pictures without the permission. Consider turn it on later</string>
+    <string name="dialog_user_grant_external_read_permission_last_deny">The photo picker could not work as expected for some pictures without the permission. Consider turn it on later</string>
     <string name="inc_date_time_inputs_date_label">Date</string>
     <string name="inc_date_time_inputs_time_label">Time</string>
     <string name="inc_date_time_tap_hint_label">Tap on Date/Time in order to update its values</string>
@@ -24,7 +18,7 @@
     <string name="add_photo_component_estimated_view_label">Estimated view:</string>
     <string name="add_photo_component_preview_header_title">Instagram</string>
     <string name="add_photo_component_username_placeholder">---</string>
-    <string name="add_photo_component_likes_number_label">941 likes</string>
+    <string name="add_photo_component_likes_number_label">288 likes</string>
     <string name="add_photo_component_caption_preview_black_color">#000000</string>
     <string name="add_photo_component_caption_preview_hashTag_color">#003569</string>
     <string name="add_photo_component_button_save_label">Add photo</string>
@@ -47,7 +41,7 @@
     <string name="home_component_dialog_photo_show_log_label">Show log</string>
     <string name="home_component_dialog_photo_hide_log_label">Hide log</string>
     <string name="home_component_dialog_photo_save_label">Edit</string>
-    <string name="home_component_dialog_photo_title">Quick Edit</string>
+    <string name="home_component_dialog_photo_title">Quick edit</string>
     <string name="home_component_dialog_photo_remove_label">Remove</string>
     <string name="home_component_up_to_date_label">You\'re All Caught Up</string>
     <string name="edit_photo_component_title">Edit photo</string>
