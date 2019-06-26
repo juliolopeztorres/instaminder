@@ -27,9 +27,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.MobileAds;
 import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.UCropActivity;
 import com.yalantis.ucrop.model.AspectRatio;
@@ -43,8 +40,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import oob.instaminder.AddPhotoScheduleComponent.Domain.ExternalStorageLastDialogShownUseCase.ExternalStorageLastDialogShownUseCase;
-import oob.instaminder.AddPhotoScheduleComponent.Domain.GetNumberAdShownUseCase.GetNumberAdShownUseCase;
-import oob.instaminder.AddPhotoScheduleComponent.Domain.IncreaseNumberAdShownUseCase.IncreaseNumberAdShownUseCase;
 import oob.instaminder.AddPhotoScheduleComponent.Domain.MarkExternalStorageLastDialogAsShownUseCase.MarkExternalStorageLastDialogAsShownUseCase;
 import oob.instaminder.AddPhotoScheduleComponent.Domain.SavePhotoUseCase.Model.Photo;
 import oob.instaminder.AddPhotoScheduleComponent.Domain.SavePhotoUseCase.SavePhotoUseCase;
@@ -66,7 +61,6 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
     private static final int REQUEST_CODE_SEARCH_PHOTO = 1;
     private static final int REQUEST_CODE_EXTERNAL_STORAGE_PERMISSION_REQUEST = 2;
     private static final String PHOTO_PLACEHOLDER_NAME = "photoEditingSpaceReserve";
-    private static final int NUMBER_OF_ADS_UNTIL_VIDEO = 10;
 
     @BindView(R.id.photoCaption)
     EditText photoCaption;
@@ -90,17 +84,12 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
     @Inject
     SavePhotoUseCase savePhotoUseCase;
     @Inject
-    GetNumberAdShownUseCase getNumberAdShownUseCase;
-    @Inject
-    IncreaseNumberAdShownUseCase increaseNumberAdShownUseCase;
-    @Inject
     ExternalStorageLastDialogShownUseCase externalStorageLastDialogShownUseCase;
     @Inject
     MarkExternalStorageLastDialogAsShownUseCase markExternalStorageLastDialogAsShownUseCase;
 
     private byte[] photoBuffer;
     private DateTimePickerHelper dateTimePickerHelper;
-    private InterstitialAd interstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,26 +108,11 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
     }
 
     private void init() {
-        this.setBackButton();
+        this.setBackButtonAndTitle();
         this.tintActionBarTextColor();
         this.setUpPreviewToolbarInformation();
         this.setUpPhotoCaptionListener();
         this.setUpDateTimeListener();
-        this.setUpAd();
-    }
-
-    private void setUpAd() {
-        MobileAds.initialize(this, this.getString(R.string.ad_id));
-
-        this.interstitialAd = new InterstitialAd(this);
-
-        if (this.getNumberAdShownUseCase.get() % NUMBER_OF_ADS_UNTIL_VIDEO == 0) {
-            this.interstitialAd.setAdUnitId(this.getString(R.string.ad_unit_id_video));
-        } else {
-            this.interstitialAd.setAdUnitId(this.getString(R.string.ad_unit_id_text_image));
-        }
-
-        this.interstitialAd.loadAd(new AdRequest.Builder().build());
     }
 
     private void setUpDateTimeListener() {
@@ -165,7 +139,7 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
         }
     }
 
-    private void setBackButton() {
+    private void setBackButtonAndTitle() {
         ActionBar actionBar = this.getSupportActionBar();
 
         if (actionBar == null) {
@@ -249,7 +223,7 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         if (requestCode == REQUEST_CODE_EXTERNAL_STORAGE_PERMISSION_REQUEST) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                this.onPhotoImagePreviewContainerClicked();
+                this.pickPhotoFromStorage();
             } else {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                         Manifest.permission.READ_EXTERNAL_STORAGE)) {
@@ -337,17 +311,7 @@ public class AddPhotoScheduleActivity extends AppCompatActivity implements ViewI
 
         this.savePhotoUseCase.save(photo);
 
-        this.showAd();
-
-        this.setResult(Activity.RESULT_OK);
         this.finish();
-    }
-
-    private void showAd() {
-        if (!((BaseApplication) this.getApplication()).isFirstLaunch() && this.interstitialAd.isLoaded()) {
-            this.interstitialAd.show();
-            this.increaseNumberAdShownUseCase.increase();
-        }
     }
 
     private File getTempFile() {
